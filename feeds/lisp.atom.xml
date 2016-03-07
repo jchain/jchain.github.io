@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>A Code Monkey's Blog</title><link href="/" rel="alternate"></link><link href="/feeds/lisp.atom.xml" rel="self"></link><id>/</id><updated>2011-01-28T19:28:53-05:00</updated><entry><title>sbcl mmap cannot allocate memory?</title><link href="/sbcl-mmap-cannot-allocate-memory.html" rel="alternate"></link><updated>2011-01-28T19:28:53-05:00</updated><author><name>jchain</name></author><id>tag:,2011-01-28:sbcl-mmap-cannot-allocate-memory.html</id><summary type="html">&lt;p&gt;Recently I want to give Common Lisp a try. After reading this great &lt;a href="http://common-lisp.net/~dlw/LispSurvey.html"&gt;Common Lisp Implementation Survey&lt;/a&gt;, I decided to go first with SBCL. After installing the binary package of SBCL-1.0.45 on my openSUSE-11.1 x86-64bit with 8Giga memory, I ran into this annoying error message when I started SBCL in terminal:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;mmap: Cannot allocate memory
+ensure_space: failed to validate 8589869056 bytes at 0x1000000000
+(hint: Try "ulimit -a"; maybe you should increase memory limits.)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I researched online for a while and finally I came up a solution(it worked for me at least). Solution: start sbcl like this&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;sbcl --dynamic-space-size 2028 --core /local/vol00/software/lib/sbcl/sbcl.core&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I guess the reason to fail is that by default sbcl will allocate 8Giga MB memory on x86-64 bit platform, which is not permitted due to the physical memory limitation. So use --dynamic-space-size to change the setting, also use --core option if your sbcl installation is not in the default location.&lt;/p&gt;</summary><category term="Common Lisp"></category><category term="tips"></category></entry></feed>

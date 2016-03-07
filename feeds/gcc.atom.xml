@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>A Code Monkey's Blog</title><link href="/" rel="alternate"></link><link href="/feeds/gcc.atom.xml" rel="self"></link><id>/</id><updated>2011-01-07T16:52:29-05:00</updated><entry><title>colorgcc and ccache work together</title><link href="/colorgcc-and-ccache-work-together.html" rel="alternate"></link><updated>2011-01-07T16:52:29-05:00</updated><author><name>jchain</name></author><id>tag:,2011-01-07:colorgcc-and-ccache-work-together.html</id><summary type="html">&lt;p&gt;The plain and lengthy output of g++ was a hurt to eye when your code contains a lot of template
+programming. &lt;a href="http://schlueters.de/colorgcc.html"&gt;colorgcc&lt;/a&gt; can make life easier. It can work well
+with &lt;a href="http://ccache.samba.org/"&gt;ccache&lt;/a&gt; but needs a bit trick to connect them together. I would like
+to recommend the solution at&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://stackoverflow.com/questions/1995415/g-colorgcc-and-ccache"&gt;http://stackoverflow.com/questions/1995415/g-colorgcc-and-ccache&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I copy the main part right here:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;h2&gt;The Short Answer&lt;/h2&gt;
+&lt;p&gt;Without patching &lt;code&gt;colorgcc.pl&lt;/code&gt; itself, the easiest way to fix this is to write yourself a simple wrapper script for each command, calling &lt;code&gt;ccache&lt;/code&gt; with the appropriate arguments for that command, and passing along the arguments the script received (effectively &lt;a href="http://en.wikipedia.org/wiki/Currying"&gt;currying&lt;/a&gt; the call to &lt;code&gt;ccache&lt;/code&gt;.)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;E.g., for &lt;strong&gt;gcc&lt;/strong&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;/usr/local/bin/ccache-gcc.sh:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;#!/bin/bash
+ccache /usr/bin/gcc "$@"
+&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;~/.colorgcc:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;gcc: /usr/local/bin/ccache-gcc.sh
+&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;and for &lt;strong&gt;g++&lt;/strong&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;/usr/local/bin/ccache-g++.sh:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;#!/bin/bash
+ccache /usr/bin/g++ "$@"
+&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;~/.colorgcc:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;gcc: /usr/local/bin/ccache-g++.sh
+&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;There are ways to clean this up so that you only use a single script,  with symlinks for each variant, but those are beyond the scope of this  answer, and I leave them to you as an excercise :-)&lt;/p&gt;</summary><category term="tips"></category></entry></feed>

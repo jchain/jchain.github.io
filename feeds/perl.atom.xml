@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>A Code Monkey's Blog</title><link href="/" rel="alternate"></link><link href="/feeds/perl.atom.xml" rel="self"></link><id>/</id><updated>2012-11-17T02:10:00-05:00</updated><entry><title>Perl one liner: replace text in mulple files</title><link href="/perl-one-liner-replace-text-in-mulple-files.html" rel="alternate"></link><updated>2012-11-17T02:10:00-05:00</updated><author><name>jchain</name></author><id>tag:,2012-11-17:perl-one-liner-replace-text-in-mulple-files.html</id><summary type="html">&lt;p&gt;Today I got some time to improve my tech blog with &lt;a href="http://octopress.org"&gt;Octopress&lt;/a&gt;. I found that I couldn't use the
+different letter cases as the same category name. Otherwise the category page wouldn't show correct
+number of links to the posts under that category. For example, I had to change all &lt;code&gt;git&lt;/code&gt; to &lt;code&gt;Git&lt;/code&gt; in
+the meta info of every posts. Here was what I used to get this job done.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ack &amp;quot;\- git&amp;quot; *.markdown -l | xargs perl -p -i -e &amp;#39;s/- git/- Git/g&amp;#39;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;A little explanation:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;-l: ask ack to only show the filename with matched search pattern. You can try first without -l
+    option to make sure you find the correct files. And then run with -l option to make the output
+    suitable for xargs
+-p: read and loop from files instead of STDIN
+-i: in-place edit
+-e: run the command. Here we do the search and replace operations.
+&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>Perl script: retrieve current weather condition and forecast</title><link href="/perl-script-retrieve-current-weather-condition-and-forecast.html" rel="alternate"></link><updated>2012-09-26T02:33:42-04:00</updated><author><name>jchain</name></author><id>tag:,2012-09-26:perl-script-retrieve-current-weather-condition-and-forecast.html</id><summary type="html">&lt;p&gt;I'm a little tired of checking out the weather condition via the web browser. In many cases I just
+want to see a short report in my terminal. After
+reading &lt;a href="http://blogs.perl.org/users/zengargoyle/2012/08/not-to-hot-for-mojo.html"&gt;http://blogs.perl.org/users/zengargoyle/2012/08/not-to-hot-for-mojo.html&lt;/a&gt;,
+which shows how to use Mojolicious to retrieve the current condition and
+&lt;a href="http://www.commandlinefu.com/commands/view/4821/get-the-weather-forecast-for-the-next-24-to-48-for-your-location."&gt;http://www.commandlinefu.com/commands/view/4821/get-the-weather-forecast-for-the-next-24-to-48-for-your-location&lt;/a&gt;,
+which shows how to retried the forecast, I finally wrote something like this&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/usr/bin/env perl&lt;/span&gt;
+&lt;span class="c1"&gt;#===============================================================================&lt;/span&gt;
+&lt;span class="c1"&gt;#&lt;/span&gt;
+&lt;span class="c1"&gt;# FILE: weather.pl&lt;/span&gt;
+&lt;span class="c1"&gt;#&lt;/span&gt;
+&lt;span class="c1"&gt;# USAGE: ./weather.pl&lt;/span&gt;
+&lt;span class="c1"&gt;#&lt;/span&gt;
+&lt;span class="c1"&gt;# VERSION: 1.0&lt;/span&gt;
+&lt;span class="c1"&gt;# CREATED: 09/13/2012 10:31:39 PM&lt;/span&gt;
+&lt;span class="c1"&gt;# REVISION: ---&lt;/span&gt;
+&lt;span class="c1"&gt;#===============================================================================&lt;/span&gt;
+
+&lt;span class="k"&gt;use&lt;/span&gt; &lt;span class="n"&gt;strict&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;use&lt;/span&gt; &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;use&lt;/span&gt; &lt;span class="n"&gt;feature&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;say&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="k"&gt;use&lt;/span&gt; &lt;span class="n"&gt;Mojolicious&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="nv"&gt;$ua&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;Mojo::&lt;/span&gt;&lt;span class="n"&gt;UserAgent&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="nv"&gt;$dom&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$ua&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;http://w1.weather.gov/xml/current_obs/KCID.xml&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;res&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;dom&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="nv"&gt;$temp&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$dom&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;temperature_string&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="nv"&gt;$weather&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$dom&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;weather&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;say&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;KCID &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$temp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot; &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$weather&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;\n&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="nv"&gt;$dom&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+&lt;span class="nv"&gt;$ua&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;http://api.wunderground.com/auto/wui/geo/ForecastXML/index.xml?query=Cedar%20Rapids&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;res&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;dom&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="nv"&gt;$e&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$dom&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;simpleforecast forecastday&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="nb"&gt;each&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+ &lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="nv"&gt;$day&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$e&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;day&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+ &lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="nv"&gt;$month&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;substr&lt;/span&gt; &lt;span class="nv"&gt;$e&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;monthname&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+ &lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="nv"&gt;$weekday&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;substr&lt;/span&gt; &lt;span class="nv"&gt;$e&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;weekday&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+ &lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="nv"&gt;$condition&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$e&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;conditions&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+ &lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="nv"&gt;$high&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$e&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;high&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;fahrenheit&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+ &lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="nv"&gt;$low&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$e&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;low&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;fahrenheit&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="nb"&gt;printf&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;%s %s %s, Low: %d, High: %d, %s\n&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$weekday&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$month&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$day&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$low&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$high&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$condition&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is how it runs from the terminal:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;zandyware@zandyware&lt;span class="o"&gt;]&lt;/span&gt; bin $ ./weather.pl
+KCID 63.0 F &lt;span class="o"&gt;(&lt;/span&gt;17.2 C&lt;span class="o"&gt;)&lt;/span&gt; Fair
+
+Tue Sep 25, Low: 46, High: 81, Clear
+Wed Sep 26, Low: 39, High: 70, Clear
+Thu Sep 27, Low: 45, High: 70, Clear
+Fri Sep 28, Low: 46, High: 70, Partly Cloudy
+Sat Sep 29, Low: 45, High: 72, Clear
+Sun Sep 30, Low: 41, High: 73, Clear
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="Perl"></category></entry><entry><title>Use Perl like sed</title><link href="/use-perl-like-sed.html" rel="alternate"></link><updated>2012-09-14T16:29:58-04:00</updated><author><name>jchain</name></author><id>tag:,2012-09-14:use-perl-like-sed.html</id><summary type="html">&lt;p&gt;Recently I wanted to use Perl and Bash to deal with a large number of files. I ended up needing
+in-line string substitution to create new shell commands. I vaguely had an idea that I should use
+'sed' to do the text transform but by any chance I would like to use Perl. I rarely use Perl as
+one-liner. It turned out that this is the correct way to do so&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;find . -name &amp;quot;*.java&amp;quot; -print | perl -ne &amp;#39;s/java/java.old/g &amp;amp;&amp;amp; print&amp;#39;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="Perl"></category></entry><entry><title>Smart match ~~ in Perl 5.10 is the equivalence to 'in' in Python</title><link href="/smart-match-in-perl-5-10-is-the-equivalence-to-in-in-python.html" rel="alternate"></link><updated>2011-02-27T17:09:13-05:00</updated><author><name>jchain</name></author><id>tag:,2011-02-27:smart-match-in-perl-5-10-is-the-equivalence-to-in-in-python.html</id><summary type="html">&lt;p&gt;Sometimes I really miss the keyword 'in' in Python which is very common operation in programming to
+check if a object is in a set. I'm very glad to see the smart match ~~ in Perl 5.10 provides the
+similar feature. &lt;/p&gt;</summary><category term="Perl"></category><category term="Python"></category></entry><entry><title>Cautious about the limit of color number in Perl GD package</title><link href="/cautious-about-the-limit-of-color-number-in-perl-gd-package.html" rel="alternate"></link><updated>2011-02-20T00:30:56-05:00</updated><author><name>jchain</name></author><id>tag:,2011-02-20:cautious-about-the-limit-of-color-number-in-perl-gd-package.html</id><summary type="html">&lt;p&gt;In the recent Perl hacking, I used GD package a lot to do image processing like region labeling and
+border tracing. I used GD to access the pixels. I ran into a very wired bug that the region labeling
+code in some cases failed to identify the regions of interest(ROIs) correctly but worked well in
+other cases.&lt;/p&gt;
+&lt;p&gt;After a painful debugging I found out the culprit. If $value is used to represent the label value,
+and I use $img-&amp;gt;setPixel($x, $y, $value) to store the value. Any value bigger than 256 will be
+rounded to the range from 0 to 255 by modulo operator. So the actual value in the label image won't
+be over 255. This means that if you use GD image like a matrix, the value of a element of the matrix
+can't be more than 255.&lt;strong&gt; I think it is due to the physical limit of the colormap which essentially
+can store no more than 256 colors.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Finally, my suggestion is using &lt;strong&gt;Math::MatrixReal&lt;/strong&gt; package.&lt;/p&gt;</summary><category term="Image processing"></category><category term="Perl"></category><category term="tips"></category></entry><entry><title>How to quote long command in Perl system()</title><link href="/how-to-quote-long-command-in-perl-system-call.html" rel="alternate"></link><updated>2011-01-20T06:14:43-05:00</updated><author><name>jchain</name></author><id>tag:,2011-01-20:how-to-quote-long-command-in-perl-system-call.html</id><summary type="html">&lt;p&gt;If you call external command in your Perl code with system() and your command is very long, you must
+want to break it into multi-line but the newline characters really get in the way.  Here is a good
+way, IMHO,  to make the code look neat and clean:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Annotate the target and landmark image&lt;/span&gt;
+&lt;span class="nb"&gt;system&lt;/span&gt; &lt;span class="n"&gt;single_line&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;
+&lt;span class="s"&gt; convert -background black -fill white label:&amp;#39;Target Landmarks&amp;#39; miff:- | composite -gravity north&lt;/span&gt;
+&lt;span class="s"&gt; -geometry +0+3 - $target_with_lmk_filename $target_with_lmk_filename&lt;/span&gt;
+&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="k"&gt;sub &lt;/span&gt;&lt;span class="nf"&gt;single_line&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+ &lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="nv"&gt;@strings&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;@_&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+ &lt;span class="k"&gt;foreach&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="nv"&gt;@strings&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+ &lt;span class="sr"&gt;s/\n/ /g&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+ &lt;span class="sr"&gt;s/\r/ /g&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+ &lt;span class="p"&gt;}&lt;/span&gt;
+ &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;wantarray&lt;/span&gt;&lt;span class="p"&gt;?&lt;/span&gt; &lt;span class="nv"&gt;@strings&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nv"&gt;$strings&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Credit due to &lt;a href="http://stackoverflow.com/questions/3707262/how-can-i-quote-a-long-string-in-perl"&gt;http://stackoverflow.com/questions/3707262/how-can-i-quote-a-long-string-in-perl&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The biggest advantage of this method over string concatenation operator "." is that it is easier to
+re-align your code in Vim since your command is not messed with quotation marks.&lt;/p&gt;</summary><category term="Perl"></category><category term="tips"></category></entry><entry><title>Cautious about colorExact() and colorAllocate() in Perl GD package</title><link href="/cautious-about-colorexact-and-colorallocate-in-perl-gd-package.html" rel="alternate"></link><updated>2011-01-17T06:33:45-05:00</updated><author><name>jchain</name></author><id>tag:,2011-01-17:cautious-about-colorexact-and-colorallocate-in-perl-gd-package.html</id><summary type="html">&lt;p&gt;For exising colors, I think it is better to use colorExact() because the color indices would be
+consistent among images. For new colors, colorAllocate() is the only choice. But colorAllocate() is
+highly recommended to use after colorExact(). It is safer to the color palette. &lt;/p&gt;</summary><category term="Image processing"></category><category term="Perl"></category><category term="tips"></category></entry></feed>
