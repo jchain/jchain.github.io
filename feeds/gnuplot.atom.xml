@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>A Code Monkey's Blog</title><link href="/" rel="alternate"></link><link href="/feeds/gnuplot.atom.xml" rel="self"></link><id>/</id><updated>2011-11-09T04:23:38-05:00</updated><entry><title>Gnuplot: how to skip the first line in the data file</title><link href="/gnuplot-how-to-skip-the-first-line-in-the-data-file.html" rel="alternate"></link><updated>2011-11-09T04:23:38-05:00</updated><author><name>jchain</name></author><id>tag:,2011-11-09:gnuplot-how-to-skip-the-first-line-in-the-data-file.html</id><summary type="html">&lt;p&gt;It is very likely that the data file you are going to visualize has a one line header at the first
-line. Use 'every' keyword to skip the first line like this.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;plot &amp;quot;foo.dat&amp;quot; every ::1 using 1:2 with lines
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Similarly you can skip 2 or 3 or whatever lines using 'every'&lt;/p&gt;</summary><category term="Gnuplot"></category><category term="tips"></category></entry></feed>

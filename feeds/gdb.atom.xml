@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>A Code Monkey's Blog</title><link href="/" rel="alternate"></link><link href="/feeds/gdb.atom.xml" rel="self"></link><id>/</id><updated>2011-08-11T01:32:32-04:00</updated><entry><title>GDB: How to set a watchpoint to watch the change of variable</title><link href="/gdb-how-to-set-a-watchpoint-to-watch-the-change-of-variable.html" rel="alternate"></link><updated>2011-08-11T01:32:32-04:00</updated><author><name>jchain</name></author><id>tag:,2011-08-11:gdb-how-to-set-a-watchpoint-to-watch-the-change-of-variable.html</id><summary type="html">&lt;p&gt;Step 1: Print the address of the variable you are going to watch.
-&lt;code&gt;p *your_variable&lt;/code&gt;
-(Suppose the address is 0x12345678
-Step 2: Set watchpoint
-&lt;code&gt;watch *0x12345678&lt;/code&gt;&lt;/p&gt;</summary><category term="GDB"></category><category term="Linux"></category></entry></feed>

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>A Code Monkey's Blog</title><link href="/" rel="alternate"></link><link href="/feeds/uncategorized.atom.xml" rel="self"></link><id>/</id><updated>2011-03-09T17:31:22-05:00</updated><entry><title>Trac's milestone feature is helpful to track the progress</title><link href="/tracs-milestone-feature-is-helpful-to-track-the-progress.html" rel="alternate"></link><updated>2011-03-09T17:31:22-05:00</updated><author><name>jchain</name></author><id>tag:,2011-03-09:tracs-milestone-feature-is-helpful-to-track-the-progress.html</id><summary type="html">&lt;p&gt;I have used several project management software before. But today I found that the milestone feature
-in Trac very impressive. At the beginning of a project I can file all the tasks, to-dos, required
-features to the issue tracking system for a specific milestone. By viewing the progress bar, I can
-have a clear big picture about the progress of the project. I like this feature very much. Very
-helpful.&lt;/p&gt;</summary><category term="Project management"></category></entry></feed>

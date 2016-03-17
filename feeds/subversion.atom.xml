@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>A Code Monkey's Blog</title><link href="/" rel="alternate"></link><link href="/feeds/subversion.atom.xml" rel="self"></link><id>/</id><updated>2011-03-28T05:38:45-04:00</updated><entry><title>Set Subversion auto-props</title><link href="/set-subversion-auto-props.html" rel="alternate"></link><updated>2011-03-28T05:38:45-04:00</updated><author><name>jchain</name></author><id>tag:,2011-03-28:set-subversion-auto-props.html</id><summary type="html">&lt;p&gt;Keep you away from the annoying line ending character problem when you are in a cross-platform
-development scenario.  Read this article:
-&lt;a href="http://www.wxwidgets.org/develop/svn.htm"&gt;http://www.wxwidgets.org/develop/svn.htm&lt;/a&gt;&lt;/p&gt;</summary><category term="Subversion"></category><category term="wxWidgets"></category></entry></feed>
