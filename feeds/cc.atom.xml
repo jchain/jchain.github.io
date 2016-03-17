@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>A Code Monkey's Blog</title><link href="/" rel="alternate"></link><link href="/feeds/cc.atom.xml" rel="self"></link><id>/</id><updated>2011-11-14T22:21:23-05:00</updated><entry><title>Arrow keys don't work properly in Totalview Debugger</title><link href="/arrow-keys-dont-work-properly-in-totalview-debugger.html" rel="alternate"></link><updated>2011-11-14T22:21:23-05:00</updated><author><name>jchain</name></author><id>tag:,2011-11-14:arrow-keys-dont-work-properly-in-totalview-debugger.html</id><summary type="html">&lt;p&gt;Totalview is a very powerful debugger for C/C++, Fortran languages, especially for debugging high performance programs. In this commandline interface(a new xterm window) no matter how hard I tried my arrow 'Up' key entered [[A char and 'Down' keys gave [[B char. What I really wanted was the 'history-previous' and 'history-next' in common Bash terminals. This type of malfunction really sucks when you debug a program through CLI. I thought at the beginning that it was due to curtain 'mismatch' between different 'TERM's or xterm mis-configuration. Wired, arrow keys worked fine if I myself started xterm. I have tried many so-called key remap configurations for xterm, rxvt or vt100/102. None of them worked.&lt;/p&gt;
+&lt;p&gt;Finally I realized that Totalview heavily relies on TCL. Its CLI is also built from TCL. So when I ran 'tclsh' in my Gnome terminal, pressing arrow keys misbehaved the exactly same way as in Totalview CLI. Therefore I continued the solution search online until I found &lt;a href="http://utopia.knoware.nl/~hlub/rlwrap/"&gt;http://utopia.knoware.nl/~hlub/rlwrap/&lt;/a&gt;. Simply run 'rlwrap tclsh' and 'rlwrap tv8cli' and the arrow keys worked like a charm.&lt;/p&gt;
+&lt;p&gt;I further aliased 'tv8cli' as 'rlwrap tv8cli'. But I still couldn't make it work in Totalview's GUI xterm CLI. Is there a way to do that?&lt;/p&gt;</summary><category term="Debug"></category><category term="tips"></category><category term="Totalview"></category></entry><entry><title>Debugging memory violation in wxgtk3 with valgrind</title><link href="/debugging-memory-violation-in-wxgtk3-with-valgrind.html" rel="alternate"></link><updated>2011-08-21T16:30:39-04:00</updated><author><name>jchain</name></author><id>tag:,2011-08-21:debugging-memory-violation-in-wxgtk3-with-valgrind.html</id><summary type="html">&lt;p&gt;wxgtk3 is under active development. Today I ran into a &lt;strong&gt;SIGABRT&lt;/strong&gt; signal when debugging samples/image. The error message is like this:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt; glibc detected &lt;/em&gt;&lt;/strong&gt; ./image: malloc(): smallbin double linked list corrupted: 0x0000000000c93180 ***
+======= Backtrace: =========
+/lib64/libc.so.6(+0x73226)[0x7f580b58f226]
+/lib64/libc.so.6(+0x758cf)[0x7f580b5918cf]
+/lib64/libc.so.6(__libc_malloc+0x79)[0x7f580b593aa9]
+/usr/lib64/libstdc++.so.6(_Znwm+0x1d)[0x7f580bd6d3dd]
+/usr/lib64/libstdc++.so.6(_Znam+0x9)[0x7f580bd6d4f9]
+./image[0x4a6d2c]
+./image[0x4a8d7c]
+./image[0x4ab21f]
+./image[0x4aaeb6]&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;What is "&lt;em&gt;malloc(): smallbin double linked list corrupted&lt;/em&gt;" error? I had no clue. I loaded the program in gdb and saw this error happens when a specific line of code having 'new' operator was hit. It should be some memory allocation violation. I searched it in Google. The returned results showed many bug reports containing this error. Interestingly, a good number of the follow-up replies said the bug was not reproducible and suggested the original  bug reporter submit valgrind log but few did that so these bug reports were marked as invalid.&lt;/p&gt;
+&lt;p&gt;I guessed most bug reporters were just common users who were not familiar with valgrind. Anyway, the search results suggested me run valgrind to get more information about the memory violation. Luckly, I played with it several month ago and made a not-bad &lt;a href="http://zandyware.wordpress.com/2011/01/21/share-my-newly-created-valgrind-wxgtk-2-9-1-suppression-file/"&gt;suppression file&lt;/a&gt; customized with wxgtk. Again I ran valgrind with the command like this:&lt;/p&gt;
+&lt;p&gt;G_SLICE=always-malloc G_DEBUG=gc-friendly valgrind --leak-check=yes --suppressions=./wx.supp --log-file=valgrind.log ./image&lt;/p&gt;
+&lt;p&gt;Valgrind immediately tracked down where the real problem was. The log looked like this&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;==17645== Memcheck, a memory error detector
+==17645== Copyright (C) 2002-2010, and GNU GPL'd, by Julian Seward et al.
+==17645== Using Valgrind-3.6.1 and LibVEX; rerun with -h for copyright info
+==17645== Command: ./image
+==17645== Parent PID: 28951
+==17645==
+==17645== Source and destination overlap in memcpy(0xe004860, 0xe003430, 5600)
+==17645==    at 0x4C289A6: memcpy (mc_replace_strmem.c:635)
+==17645==    by 0x447DD0: wxBitmap::CreateFromImageAsPixmap(wxImage const&amp;amp;, int) (bitmap_gtk3.cpp:500)
+==17645==    by 0x447910: wxBitmap::CreateFromImage(wxImage const&amp;amp;, int) (bitmap_gtk3.cpp:383)
+==17645==    by 0x425694: wxBitmap::wxBitmap(wxImage const&amp;amp;, int) (bitmap.h:72)
+==17645==    by 0x42DDEA: MyCanvas::MyCanvas(wxWindow&lt;em&gt;, int, wxPoint const&amp;amp;, wxSize const&amp;amp;) (canvas.cpp:199)
+==17645==    by 0x41EE7F: MyFrame::MyFrame() (image.cpp:678)
+==17645==    by 0x420B23: MyApp::OnInit() (image.cpp:878)
+==17645==    by 0x424A22: wxAppConsoleBase::CallOnInit() (app.h:92)
+==17645==    by 0x611002: wxEntry(int&amp;amp;, wchar_t&lt;strong&gt;) (init.cpp:456)
+==17645==    by 0x6110F1: wxEntry(int&amp;amp;, char&lt;/strong&gt;) (init.cpp:484)
+==17645==    by 0x420A84: main (image.cpp:869)
+==17645==
+==17645== Invalid read of size 8
+==17645==    at 0x4C28B2C: memcpy (mc_replace_strmem.c:635)
+==17645==    by 0x447DD0: wxBitmap::CreateFromImageAsPixmap(wxImage const&amp;amp;, int) (bitmap_gtk3.cpp:500)
+==17645==    by 0x447910: wxBitmap::CreateFromImage(wxImage const&amp;amp;, int) (bitmap_gtk3.cpp:383)
+==17645==    by 0x425694: wxBitmap::wxBitmap(wxImage const&amp;amp;, int) (bitmap.h:72)
+==17645==    by 0x42DDEA: MyCanvas::MyCanvas(wxWindow&lt;/em&gt;, int, wxPoint const&amp;amp;, wxSize const&amp;amp;) (canvas.cpp:199)
+==17645==    by 0x41EE7F: MyFrame::MyFrame() (image.cpp:678)
+==17645==    by 0x420B23: MyApp::OnInit() (image.cpp:878)
+==17645==    by 0x424A22: wxAppConsoleBase::CallOnInit() (app.h:92)
+==17645==    by 0x611002: wxEntry(int&amp;amp;, wchar_t&lt;strong&gt;) (init.cpp:456)
+==17645==    by 0x6110F1: wxEntry(int&amp;amp;, char&lt;/strong&gt;) (init.cpp:484)
+==17645==    by 0x420A84: main (image.cpp:869)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;It turned out that memcpy() at the line 500 in bitmap_gtk3.cpp manipulated overlapping memory. That was the actual culprit. Valgrind even showed the call backtrace to help you to reproduce the bug. Awesome.&lt;/p&gt;
+&lt;p&gt;I hope this blog entry help you to use Valgrind to locate the bug and fix memory error quickly.&lt;/p&gt;</summary><category term="C/C++"></category><category term="GDB"></category><category term="Valgrind"></category><category term="wxWidgets"></category></entry><entry><title>Understand gcc -L option and library search order</title><link href="/understand-gcc-l-option-and-library-search-order.html" rel="alternate"></link><updated>2011-07-26T16:27:12-04:00</updated><author><name>jchain</name></author><id>tag:,2011-07-26:understand-gcc-l-option-and-library-search-order.html</id><summary type="html">&lt;p&gt;In my project of porting wxGTK from GTK+2 to GTK+3, I built GTK+3 from scratch and installed it at a non-standard location. One of the painful things was that the gcc linker complained about the unknown references to glib or functions. The reason was that I had two parallel glib-2.0.so, one was the system default at /usr/lib64, the other was from my custom build. In the makefile, the gcc linker was given three -L options, something like&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;-L/usr/lib64 blah blah blah -L/home/foo/gtk3/libs blah blah blah -L/usr/lib64&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Apparently, one of two options -L/usr/lib64 took higher priority in the library search order so that my custom glib-2.0.so was not found. But which one was the culprit? I did a little experiment and it turned out that the first masked my custom GTK+3 lib path. So the conclusion is if you have several -L&lt;dir&gt; options the library search order will be 'first-come-first-search'.&lt;/p&gt;
+&lt;p&gt;The next question is how to solve it. In the makefile, linker flags were specified by something like this:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$(CXX) blah blah blah $(LDFLAGS) $(EXTRALIBS_FOR_GUI) $(LIBS)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In my case, the default setting for $(LDFLAGS) is '-L/usr/lib64', $(EXTRALIBS_FOR_GUI)='-L/home/foo/gtk3/libs' and $(LIBS)='-L/usr/lib64'. Since the makefile was generated by configure which is effected by the environmental variables such as LDFLAGS, doing the following solved my problem:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;export LDFLAGS='-L/home/foo/gtk3/libs'&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;re-run configure&lt;/p&gt;
+&lt;p&gt;Your mileage may vary. But hope this post can give some hints for your own problems especially if you use parallel libraries.&lt;/p&gt;</summary><category term="C/C++"></category><category term="GCC"></category><category term="tips"></category><category term="wx"></category><category term="wxWidgets"></category></entry><entry><title>Nasty bug lurked in the implicite function</title><link href="/nasty-bug-lurked-in-the-implicite-function.html" rel="alternate"></link><updated>2011-06-28T18:16:51-04:00</updated><author><name>jchain</name></author><id>tag:,2011-06-28:nasty-bug-lurked-in-the-implicite-function.html</id><summary type="html">&lt;p&gt;I fixed a bug in C code today and it was so nasty that I think it is worth a blog post so that I can keep that in mind.&lt;/p&gt;
+&lt;p&gt;I called a function which allocated a chunk of memory with malloc() and returned a pointer pointing to that memory. The wired thing is the returned address will change so that the caller get an invalid address(out of the bound of memory). More precisely speaking, the most significant bit changes from 0x7fff.... to 0xffff.... I really had no clue about why it would go like that. I even tried to disassemble the C code to check what was wrong. It turned out that the return address in the callee was correct but after returning the address to the caller, the value changed. I wrote another toy program to verify everything and finally I nailed down the reason. The callee function is defined in another C file and it looks like an implicit function to the caller. Somehow, this implicit function changed the address during the call. The compilation was fine even though GCC threw a warning about it. I ignored it at the first place but eventually this warning bit me. After adding necessary definitions in the header files. My program worked like a charm.&lt;/p&gt;
+&lt;p&gt;The lesson I learned: don't ignore the warning messages of compiler.&lt;/p&gt;</summary><category term="C/C++"></category><category term="GCC"></category><category term="Linux"></category></entry><entry><title>wxGTK with gtk+3.0 preview</title><link href="/wxgtk-with-gtk3-0-preview.html" rel="alternate"></link><updated>2011-06-26T01:26:00-04:00</updated><author><name>jchain</name></author><id>tag:,2011-06-26:wxgtk-with-gtk3-0-preview.html</id><summary type="html">&lt;p&gt;After about one month porting work on wxWidgets with GTK+3.0, we finally made the wx-gtk+3.0 build possible. The wx/samples/minimal is working as shown below even though the status bar doesn't show up. For preview purpose of course.
+&lt;a href="http://zandyware.files.wordpress.com/2011/06/wxgtk3_minimal.png"&gt;&lt;img alt="" src="http://zandyware.files.wordpress.com/2011/06/wxgtk3_minimal.png" /&gt;&lt;/a&gt;
+Work will continue on porting drawing code with Cairo as what gtk+3.0 does by default. More samples will be built and tested. Stay tune.&lt;/p&gt;</summary><category term="C/C++"></category><category term="GTK"></category><category term="Linux"></category><category term="wxWidgets"></category></entry><entry><title>A must read for every GDB learner</title><link href="/a-must-read-for-every-gdb-learner.html" rel="alternate"></link><updated>2011-05-25T22:05:33-04:00</updated><author><name>jchain</name></author><id>tag:,2011-05-25:a-must-read-for-every-gdb-learner.html</id><summary type="html">&lt;p&gt;Want to customize your GDB to make it more productive? Read this great article &lt;a href="http://www.ibm.com/developerworks/aix/library/au-gdb.html"&gt;GNU Project Debugger: More fun with GDB &lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Programmers take note: If you want to create great software, then add the ability to program macros, allowing your community of users to be able to enhance your tool to suit their own tastes.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I can't agree more&lt;/p&gt;</summary><category term="C/C++"></category><category term="GDB"></category><category term="Linux"></category></entry><entry><title>Following Google's C++ coding style is a good practice.</title><link href="/following-googles-c-coding-style-is-a-good-practice.html" rel="alternate"></link><updated>2011-05-22T19:07:15-04:00</updated><author><name>jchain</name></author><id>tag:,2011-05-22:following-googles-c-coding-style-is-a-good-practice.html</id><summary type="html">&lt;p&gt;Following Google's C++ coding &lt;a href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml"&gt;style&lt;/a&gt; is a good practice. Google even open-sourced its coding style checker &lt;a href="http://google-styleguide.googlecode.com/svn/trunk/cpplint/cpplint.py"&gt;cpplint.py&lt;/a&gt;. The suggestion of using const as often as possible is especially a good one. Although there are many coding styles available on the web, following them strictly without a tool won't last long in my real case. I particularly appreciate the public release of cpplint.py. A uniform coding style can finally be seen in our team.&lt;/p&gt;</summary><category term="C++"></category><category term="Tools"></category></entry><entry><title>GCC-4.5.0 users, upgrade to 4.5.2 or newer</title><link href="/gcc-4-5-0-users-upgrade-to-4-5-2-or-newer.html" rel="alternate"></link><updated>2011-05-14T06:56:58-04:00</updated><author><name>jchain</name></author><id>tag:,2011-05-14:gcc-4-5-0-users-upgrade-to-4-5-2-or-newer.html</id><summary type="html">&lt;p&gt;I'm debugging a complicated C++ program this week. It used a lot of STL containers, such as
+stl::map. To print the content of stl::map in GDB-7.x with Python&lt;a href="http://sourceware.org/gdb/wiki/STLSupport"&gt;
+pretty-printing&lt;/a&gt; enabled. I got error message like
+&lt;a href="http://gcc.gnu.org/ml/libstdc++/2010-06/msg00128.html"&gt;this&lt;/a&gt;. My original thought was it might be
+a bug in GDB, so I upgraded it to the latest version. But the error remained. Without
+pretty-printing, debugging C++ program is really a PITA. So I had to stop my work at hand and
+searched for solution online. After I read this &lt;a href="http://gcc.gnu.org/bugzilla/show_bug.cgi?id=44645"&gt;bug report&lt;/a&gt;, I realised that it was due to the bug in
+GCC. I did a simple test as mentioned in the bug report and found out that program compiled with
+GCC-4.5.0 would mess up the pretty-printing in GDB. After installing the lastest GCC-4.5.3,
+everything was OK.&lt;/p&gt;</summary><category term="C++"></category><category term="GCC"></category><category term="GDB"></category><category term="Linux"></category></entry><entry><title>Perl Inline module is awesome</title><link href="/perl-inline-module-is-awesome.html" rel="alternate"></link><updated>2011-03-01T20:22:50-05:00</updated><author><name>jchain</name></author><id>tag:,2011-03-01:perl-inline-module-is-awesome.html</id><summary type="html">&lt;p&gt;As you might know that I'm doing some image processing with Perl and GD module. However, iterating
+a whole 512x512 image, i.e. every pixels, is prohibitively slow in Perl. Here is the Inline module
+to rescue. After playing around with it in several minutes, yes, only several minutes, my Perl code
+with C Inline function accessing the image boosted up 10 times faster! Every Perl programmer should
+check it out:
+&lt;a href="http://search.cpan.org/~sisyphus/Inline-0.48/Inline.pod"&gt;http://search.cpan.org/~sisyphus/Inline-0.48/Inline.pod&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Edited: I would like to add a toy example here for anyone who are interested in Perl::Inline. It
+shows how to call external library(GD) from Perl script.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#!/usr/bin/perl&lt;/span&gt;
+&lt;span class="n"&gt;use&lt;/span&gt; &lt;span class="n"&gt;strict&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;use&lt;/span&gt; &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="nf"&gt;gd_test&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+&lt;span class="n"&gt;use&lt;/span&gt; &lt;span class="n"&gt;Inline&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Config&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt;
+&lt;span class="n"&gt;LIBS&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;lgd&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;use&lt;/span&gt; &lt;span class="n"&gt;Inline&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;END_OF_C_CODE&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;quot;gd.h&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* Bring in standard I/O so we can output the PNG to a file */&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;gd_test&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* Declare the image */&lt;/span&gt;
+&lt;span class="n"&gt;gdImagePtr&lt;/span&gt; &lt;span class="n"&gt;im&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* Declare output files */&lt;/span&gt;
+&lt;span class="kt"&gt;FILE&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pngout&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;jpegout&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* Declare color indexes */&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;black&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;white&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* Allocate the image: 64 pixels across by 64 pixels tall */&lt;/span&gt;
+&lt;span class="n"&gt;im&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;gdImageCreate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* Allocate the color black (red, green and blue all minimum).&lt;/span&gt;
+&lt;span class="cm"&gt;Since this is the first color in a new image, it will&lt;/span&gt;
+&lt;span class="cm"&gt;be the background color. */&lt;/span&gt;
+
+&lt;span class="n"&gt;black&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;gdImageColorAllocate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;im&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* Allocate the color white (red, green and blue all maximum). */&lt;/span&gt;
+&lt;span class="n"&gt;white&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;gdImageColorAllocate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;im&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;255&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;255&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;255&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* Draw a line from the upper left to the lower right,&lt;/span&gt;
+&lt;span class="cm"&gt;using white color index. */&lt;/span&gt;
+&lt;span class="n"&gt;gdImageLine&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;im&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;63&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;63&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;white&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* Open a file for writing. &amp;quot;wb&amp;quot; means &amp;quot;write binary&amp;quot;, important&lt;/span&gt;
+&lt;span class="cm"&gt;under MSDOS, harmless under Unix. */&lt;/span&gt;
+&lt;span class="n"&gt;pngout&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fopen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;test.png&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;wb&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* Do the same for a JPEG-format file. */&lt;/span&gt;
+&lt;span class="n"&gt;jpegout&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fopen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;test.jpg&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;wb&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* Output the image to the disk file in PNG format. */&lt;/span&gt;
+&lt;span class="n"&gt;gdImagePng&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;im&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pngout&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* Output the same image in JPEG format, using the default&lt;/span&gt;
+&lt;span class="cm"&gt;JPEG quality setting. */&lt;/span&gt;
+&lt;span class="n"&gt;gdImageJpeg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;im&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;jpegout&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* Close the files. */&lt;/span&gt;
+&lt;span class="n"&gt;fclose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pngout&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;fclose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;jpegout&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* Destroy the image in memory. */&lt;/span&gt;
+&lt;span class="n"&gt;gdImageDestroy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;im&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;END_OF_C_CODE&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="C++"></category><category term="Perl"></category></entry><entry><title>Share my newly created Valgrind wxGTK-2.9.1 suppression file</title><link href="/share-my-newly-created-valgrind-wxgtk-2-9-1-suppression-file.html" rel="alternate"></link><updated>2011-01-21T20:34:21-05:00</updated><author><name>jchain</name></author><id>tag:,2011-01-21:share-my-newly-created-valgrind-wxgtk-2-9-1-suppression-file.html</id><summary type="html">&lt;p&gt;If you want use Valgrind to check the memory leak of your wxGTK program, you probably end up with
+too many false detections. You need a suppression file to help you focus on the real problem you are
+dealing with. I followed the great article at&lt;a href="http://wiki.wxwidgets.org/Valgrind_Suppression_File_Howto"&gt;
+http://wiki.wxwidgets.org/Valgrind_Suppression_File_Howto&lt;/a&gt;
+to create my first wxGTK suppression file. The version of wxGTK is 2.9.1 and my OS is openSUSE-11.1
+&lt;strong&gt;x86-64&lt;/strong&gt; . If your OS arch is not x86-64, you may need to modify the string occurrences  '64'  in
+suppression file. I tested my suppression file with wxWdgets sample program 'mininal' the error
+number is 2, with sample opengl program 'cube' the error number is 0. I hope I didn't overact in my
+suppression file.&lt;/p&gt;
+&lt;p&gt;I suggested using the following command to fire up valgrind:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;G_SLICE=always-malloc G_DEBUG=gc-friendly valgrind --leak-check=yes
+--suppressions=./wx.supp --log-file=valgrind.log ./YOUR_PROG
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Download it at here &lt;a href="http://zandyware.files.wordpress.com/2011/01/wx-supp.doc"&gt;wx.supp&lt;/a&gt;. And
+&lt;strong&gt;remove the 'doc' extension or rename to whatever you like since it is a plain txt file per se.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Read more at &lt;a href="http://live.gnome.org/Valgrind"&gt;http://live.gnome.org/Valgrind &lt;/a&gt;&lt;/p&gt;</summary><category term="C/C++"></category><category term="Debugging"></category><category term="tips"></category><category term="Valgrind"></category><category term="wxWidgets"></category></entry></feed>

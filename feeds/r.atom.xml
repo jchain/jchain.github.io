@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>A Code Monkey's Blog</title><link href="/" rel="alternate"></link><link href="/feeds/r.atom.xml" rel="self"></link><id>/</id><updated>2013-01-28T23:43:00-05:00</updated><entry><title>Install RcppOctave if Octave is in user-defined directory</title><link href="/install-rcppoctave-if-octave-is-in-user-defined-directory.html" rel="alternate"></link><updated>2013-01-28T23:43:00-05:00</updated><author><name>jchain</name></author><id>tag:,2013-01-28:install-rcppoctave-if-octave-is-in-user-defined-directory.html</id><summary type="html">&lt;p&gt;Even though I have been very busy these days I think I should try to get at least one post published
+per month. My recent job involved a lot of data analysis and statistical computing. I pushed myself
+to get familiar with &lt;a href="http://www.r-project.org"&gt;R&lt;/a&gt; because some packages from R are indispensable for my work. Meanwhile
+I also wanted to reuse my existing &lt;a href="http://www.octave.org"&gt;Octave&lt;/a&gt; code. Luckily I get the best of both worlds by using
+&lt;a href="http://cran.r-project.org/web/packages/RcppOctave/"&gt;RcppOctave&lt;/a&gt; which is a bridging package connecting the R and Octave sessions. &lt;/p&gt;
+&lt;p&gt;I compiled the latest Octave on the server and installed in my home directory. When installing
+&lt;code&gt;RcppOctave&lt;/code&gt; in R by running&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;install.packages(&amp;#39;RcppOctave&amp;#39;)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I ran into an error message like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;** preparing package for lazy loading
+Creating a generic function for ‘show’ from ‘methods’ in package ‘RcppOctave’
+    (from the saved implicit definition)
+** help
+Error : /tmp/Rtmp028JZY/R.INSTALL6dea26e533ee/RcppOctave/man/o_addpath.Rd:40: unable to load
+shared object &amp;#39;/home/zandy/lib64/R/library/RcppOctave/libs/RcppOctave.so&amp;#39;:
+liboctinterp.so.1: cannot open shared object file: No such file or directory
+
+ERROR: installing Rd objects failed for package ‘RcppOctave’
+* removing ‘/home/zandy/lib64/R/library/RcppOctave’
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The build phase seemed OK. Only did the install phase complain. I spent some time and figured out
+a work-around is to specify the library path to your &lt;code&gt;liboctinterp.so&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="x"&gt;export LD_LIBRARY_PATH=&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;LD_LIBRARY_PATH&lt;/span&gt;&lt;span class="x"&gt;:&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;HOME&lt;/span&gt;&lt;span class="x"&gt;/lib64/octave/3.6.3&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I don't know much about the internal mechanism of &lt;code&gt;install.packages&lt;/code&gt; otherwise I may be able to fix
+the problem completely.&lt;/p&gt;</summary></entry></feed>

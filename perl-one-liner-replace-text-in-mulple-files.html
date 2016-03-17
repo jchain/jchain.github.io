@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Perl one liner: replace text in mulple files &mdash; A Code Monkey's Blog</title>
+  <meta name="author" content="jchain">
+
+
+
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="/theme/images/favicon.png" rel="icon">
+
+  <link href="/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+
+  <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="/">A Code Monkey's Blog</a></h1>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+</ul>
+
+
+<ul class="main-navigation">
+      <li >
+        <a href="/category/c.html">C++</a>
+      </li>
+      <li >
+        <a href="/category/cc.html">C/c++</a>
+      </li>
+      <li >
+        <a href="/category/cygwin.html">Cygwin</a>
+      </li>
+      <li >
+        <a href="/category/dev.html">Dev</a>
+      </li>
+      <li >
+        <a href="/category/gcc.html">Gcc</a>
+      </li>
+      <li >
+        <a href="/category/gdb.html">Gdb</a>
+      </li>
+      <li >
+        <a href="/category/git.html">Git</a>
+      </li>
+      <li >
+        <a href="/category/gnome.html">Gnome</a>
+      </li>
+      <li >
+        <a href="/category/gnuplot.html">Gnuplot</a>
+      </li>
+      <li >
+        <a href="/category/java.html">Java</a>
+      </li>
+      <li >
+        <a href="/category/latex.html">Latex</a>
+      </li>
+      <li >
+        <a href="/category/linux.html">Linux</a>
+      </li>
+      <li >
+        <a href="/category/lisp.html">Lisp</a>
+      </li>
+      <li >
+        <a href="/category/math.html">Math</a>
+      </li>
+      <li >
+        <a href="/category/misc.html">Misc</a>
+      </li>
+      <li >
+        <a href="/category/octave.html">Octave</a>
+      </li>
+      <li >
+        <a href="/category/oop.html">Oop</a>
+      </li>
+      <li >
+        <a href="/category/openmp.html">Openmp</a>
+      </li>
+      <li class="active">
+        <a href="/category/perl.html">Perl</a>
+      </li>
+      <li >
+        <a href="/category/r.html">R</a>
+      </li>
+      <li >
+        <a href="/category/subversion.html">Subversion</a>
+      </li>
+      <li >
+        <a href="/category/uncategorized.html">Uncategorized</a>
+      </li>
+      <li >
+        <a href="/category/vim.html">Vim</a>
+      </li>
+      <li >
+        <a href="/category/web.html">Web</a>
+      </li>
+      <li >
+        <a href="/category/yeah.html">Yeah</a>
+      </li>
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">Perl one liner: replace text in mulple files</h1>
+    <p class="meta">
+<time datetime="2012-11-17T02:10:00-05:00" pubdate>Nov 17 2012</time>    </p>
+</header>
+
+  <div class="entry-content"><p>Today I got some time to improve my tech blog with <a href="http://octopress.org">Octopress</a>. I found that I couldn't use the
+different letter cases as the same category name. Otherwise the category page wouldn't show correct
+number of links to the posts under that category. For example, I had to change all <code>git</code> to <code>Git</code> in
+the meta info of every posts. Here was what I used to get this job done.</p>
+<div class="highlight"><pre><span></span>ack &quot;\- git&quot; *.markdown -l | xargs perl -p -i -e &#39;s/- git/- Git/g&#39;
+</pre></div>
+
+
+<p>A little explanation:</p>
+<div class="highlight"><pre><span></span>-l: ask ack to only show the filename with matched search pattern. You can try first without -l
+    option to make sure you find the correct files. And then run with -l option to make the output
+    suitable for xargs
+-p: read and loop from files instead of STDIN
+-i: in-place edit
+-e: run the command. Here we do the search and replace operations.
+</pre></div></div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">
+        jchain
+    </span>
+  </span>
+<time datetime="2012-11-17T02:10:00-05:00" pubdate>Nov 17 2012</time>  <span class="categories">
+    <a class='category' href='/category/perl.html'>Perl</a>
+  </span>
+</p><div class="sharing">
+</div>    </footer>
+  </article>
+
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="/fix-the-loading-dll-issue-of-octave-cygwin.html">Fix the loading dll issue of Octave Cygwin</a>
+      </li>
+      <li class="post">
+          <a href="/use-juniper-vpn-client-under-fedora-20-x86-64.html">Use Juniper VPN Client under Fedora 20 x86-64</a>
+      </li>
+      <li class="post">
+          <a href="/watch-netflix-in-linux.html">Watch Netflix in Linux</a>
+      </li>
+      <li class="post">
+          <a href="/fly-with-vim-airline.html">Fly with vim airline</a>
+      </li>
+      <li class="post">
+          <a href="/fedora-19-and-gnome-38.html">Fedora 19 and Gnome 3.8</a>
+      </li>
+    </ul>
+  </section>
+
+  <!--  -->
+  <!-- <section> -->
+  <!--      -->
+  <!--   <h1>Categories</h1> -->
+  <!--   <ul id="recent_posts"> -->
+  <!--      -->
+  <!--       <li><a href="/category/c.html">C++</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/cc.html">C/C++</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/cygwin.html">Cygwin</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/dev.html">Dev</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/gcc.html">GCC</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/gdb.html">GDB</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/git.html">Git</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/gnome.html">GNOME</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/gnuplot.html">Gnuplot</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/java.html">Java</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/latex.html">Latex</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/linux.html">Linux</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/lisp.html">Lisp</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/math.html">Math</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/misc.html">misc</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/octave.html">Octave</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/oop.html">OOP</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/openmp.html">OpenMP</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/perl.html">Perl</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/r.html">R</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/subversion.html">Subversion</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/uncategorized.html">Uncategorized</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/vim.html">Vim</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/web.html">Web</a></li> -->
+  <!--      -->
+  <!--       <li><a href="/category/yeah.html">yeah</a></li> -->
+  <!--      -->
+  <!--   </ul> -->
+  <!-- </section> -->
+  <!--   -->
+
+  <section>
+  <h1>Tags</h1>
+    <a href="/tag/debugging.html">Debugging</a>,    <a href="/tag/gcj.html">GCJ</a>,    <a href="/tag/cc.html">C/C++</a>,    <a href="/tag/awesome.html">awesome</a>,    <a href="/tag/testing.html">Testing</a>,    <a href="/tag/project-management.html">Project management</a>,    <a href="/tag/vim.html">Vim</a>,    <a href="/tag/image-processing.html">Image processing</a>,    <a href="/tag/gdb.html">GDB</a>,    <a href="/tag/mingw.html">MinGW</a>,    <a href="/tag/linux.html">Linux</a>,    <a href="/tag/text-processing.html">text processing</a>,    <a href="/tag/tools.html">Tools</a>,    <a href="/tag/xml.html">XML</a>,    <a href="/tag/web.html">Web</a>,    <a href="/tag/gcc.html">GCC</a>,    <a href="/tag/git.html">Git</a>,    <a href="/tag/productivity.html">Productivity</a>,    <a href="/tag/wxwidgets.html">wxWidgets</a>,    <a href="/tag/gnuplot.html">Gnuplot</a>,    <a href="/tag/vtk.html">VTK</a>,    <a href="/tag/gtk.html">GTK</a>,    <a href="/tag/perl.html">Perl</a>,    <a href="/tag/subversion.html">Subversion</a>,    <a href="/tag/common-lisp.html">Common Lisp</a>,    <a href="/tag/emacs.html">Emacs</a>,    <a href="/tag/tips.html">tips</a>,    <a href="/tag/math.html">Math</a>,    <a href="/tag/word-processing.html">word processing</a>,    <a href="/tag/event-driven-programming.html">Event-driven programming</a>,    <a href="/tag/oop.html">OOP</a>,    <a href="/tag/python.html">Python</a>,    <a href="/tag/openmp.html">OpenMP</a>,    <a href="/tag/screen.html">Screen</a>,    <a href="/tag/opensuse.html">openSUSE</a>,    <a href="/tag/openoffice.html">openoffice</a>,    <a href="/tag/cygwin.html">Cygwin</a>,    <a href="/tag/octave.html">Octave</a>,    <a href="/tag/ubuntu.html">Ubuntu</a>,    <a href="/tag/totalview.html">Totalview</a>,    <a href="/tag/java.html">Java</a>,    <a href="/tag/vpn.html">VPN</a>,    <a href="/tag/visual-c.html">Visual C++</a>,    <a href="/tag/bash.html">Bash</a>,    <a href="/tag/wx.html">wx</a>,    <a href="/tag/svn.html">svn</a>,    <a href="/tag/latex.html">Latex</a>,    <a href="/tag/c.html">C++</a>,    <a href="/tag/gnome.html">Gnome</a>,    <a href="/tag/windows.html">Windows</a>,    <a href="/tag/gui.html">GUI</a>,    <a href="/tag/programming.html">Programming</a>,    <a href="/tag/valgrind.html">Valgrind</a>,    <a href="/tag/thats.html">thats</a>,    <a href="/tag/debug.html">Debug</a>,    <a href="/tag/cmake.html">CMake</a>,    <a href="/tag/delphi.html">Delphi</a>,    <a href="/tag/wine.html">Wine</a>  </section>
+
+
+    <section>
+        <h1>Social</h1>
+        <ul>
+            <li><a href="https://github.com/jchain" target="_blank">github</a></li>
+            <li><a href="http://stackoverflow.com/users/160506/john-chain" target="_blank">stack-overflow</a></li>
+        </ul>
+    </section>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- jchain.github.io -->
+<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px"
+    data-ad-client="ca-pub-8593849440923360" data-ad-slot="3054477537"></ins> <script> (adsbygoogle
+= window.adsbygoogle || []).push({}); </script>
+  <!--     <section>
+        <h1>Blogroll</h1>
+        <ul>
+            <li><a href="http://getpelican.com/" target="_blank">Pelican</a></li>
+            <li><a href="http://python.org/" target="_blank">Python.org</a></li>
+            <li><a href="http://jinja.pocoo.org/" target="_blank">Jinja2</a></li>
+        </ul>
+    </section>
+ -->
+  <!-- 
+ -->
+  <!--  -->
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+    Copyright &copy;  2006&ndash;2014  jchain &mdash;
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  <script src="/theme/js/modernizr-2.0.js"></script>
+  <script src="/theme/js/ender.js"></script>
+  <script src="/theme/js/octopress.js" type="text/javascript"></script>
+<script>
+  !function(g,s,q,r,d){r=g[r]=g[r]||function(){(r.q=r.q||[]).push(
+  arguments)};d=s.createElement(q);q=s.getElementsByTagName(q)[0];
+  d.src='//d1l6p2sc9645hc.cloudfront.net/tracker.js';q.parentNode.
+  insertBefore(d,q)}(window,document,'script','_gs');
+
+  _gs('GSN-060079-Y');
+</script>
+  <script type="text/javascript">
+    var disqus_shortname = 'zandy3';
+    var disqus_identifier = '/perl-one-liner-replace-text-in-mulple-files.html';
+    var disqus_url = '/perl-one-liner-replace-text-in-mulple-files.html';
+    var disqus_title = 'Perl one liner: replace text in mulple files';
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+     })();
+  </script>
+</body>
+</html>

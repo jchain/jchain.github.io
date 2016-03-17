@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>A Code Monkey's Blog</title><link href="/" rel="alternate"></link><link href="/feeds/linux.atom.xml" rel="self"></link><id>/</id><updated>2014-03-10T15:59:00-04:00</updated><entry><title>Use Juniper VPN Client under Fedora 20 x86-64</title><link href="/use-juniper-vpn-client-under-fedora-20-x86-64.html" rel="alternate"></link><updated>2014-03-10T15:59:00-04:00</updated><author><name>jchain</name></author><id>tag:,2014-03-10:use-juniper-vpn-client-under-fedora-20-x86-64.html</id><summary type="html">&lt;p&gt;This is my first time to use Juniper VPN to connect to the workplace from home. My computer runs
+Fedora 20 in 64bit and Firefox in 64bit. I had a hard time to establish a connection through the web
+portal. The client files were downloaded into&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;~/.juniper_networks
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I followed the instructions listed &lt;a href="http://tuxdna.wordpress.com/2013/07/04/juniper-networks-vpn-from-fedora-17-x86_64/"&gt;here&lt;/a&gt;, &lt;a href="https://github.com/rthill/jvpn"&gt;here&lt;/a&gt;, &lt;a href="https://github.com/rthill/jvpn"&gt;here&lt;/a&gt; and &lt;a href="http://www.scc.kit.edu/scc/net/juniper-vpn/linux/"&gt;here&lt;/a&gt;. None of them
+worked. I got stuck by the error message in &lt;code&gt;ncsvc.log&lt;/code&gt;like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ncapp.error Failed to authenticate with IVE.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Finally this &lt;a href="http://techydodo.wordpress.com/2012/01/17/cracking-the-juniper-network-connect-problem-on-linux-64-bit/"&gt;blog post&lt;/a&gt; saved my day. I confirmed it solved my issue. It turns out sometimes you
+have to use the web browser to make the connection. Here is what I did.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install 32bit Opera&lt;/li&gt;
+&lt;li&gt;Install 32bit JRE. Java plugin is stored in &lt;code&gt;/usr/java/default/i386/libnpjp2.so&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Type &lt;code&gt;about:plugins&lt;/code&gt; in the address windows of Opera to find out where the plugins is located. In
+   my case it is in &lt;code&gt;/usr/lib/mozilla/plugins&lt;/code&gt; .&lt;/li&gt;
+&lt;li&gt;Made a symbolic link of 32bit Java plugin to &lt;code&gt;/usr/lib/mozilla/plugins&lt;/code&gt; .&lt;/li&gt;
+&lt;li&gt;Re-visit the VPN login portal to set up the connection.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;You should see the VPN session window pop up and the connection is up. This is the simplest way to
+make everything work.&lt;/p&gt;</summary><category term="Linux"></category><category term="VPN"></category></entry><entry><title>Watch Netflix in Linux</title><link href="/watch-netflix-in-linux.html" rel="alternate"></link><updated>2013-11-29T13:09:00-05:00</updated><author><name>jchain</name></author><id>tag:,2013-11-29:watch-netflix-in-linux.html</id><summary type="html">&lt;p&gt;I had watched TV shows on &lt;a href="http://www.hulu.com"&gt;Hulu&lt;/a&gt; for a simple reason that it's Flash-based so I could watch it in
+Linux. One thing I did't like about Hulu is its high-frequency of ads. &lt;a href="http://www.netflix.com"&gt;Netflix&lt;/a&gt; has fewer ads
+but it builds its business on Silverlight plugin, which is generally exclusive for Windows and Mac
+OS. I've never imagined that I could be able to watch movies in Linux until I found &lt;a href="http://fds-team.de/cms/articles/2013-08/pipelight-using-silverlight-in-linux-browsers.html"&gt;Pipelight&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Pipelight is a very smart project that makes use of &lt;a href="http://www.winehq.org"&gt;Wine&lt;/a&gt; to make Silverlight work in Linux web
+browser. The website of Pipelight has provides a very complete documentation on the installation for
+various Linux distributions. For me the installation for Fedora 19 was a breezy. Of course, you also
+need some Firefox &lt;a href="https://addons.mozilla.org/en-US/firefox/addon/user-agent-overrider/"&gt;plugin&lt;/a&gt; to make Netflix believe you are using Windows Firefox. When you first
+load Pipelight, Wine will automatically configure everything including downloading Silverlight.
+I like this plugin so much. I don't think I will upgrade to Fedora 20 until Pipelight for that
+version is available.&lt;/p&gt;
+&lt;p&gt;Only one thing I found worth mentioning this time is the update. If your Linux distribution updates
+the version of Wine and your Pipelight doesn't work, my solution is to completely remove Wine and
+Pipelight and then reinstall them.&lt;/p&gt;
+&lt;p&gt;You can how Netflix looks like in my Linux Firefox: &lt;img alt="alt" src="https://db.tt/T0rNtnou" /&gt;&lt;/p&gt;</summary><category term="Linux"></category><category term="Wine"></category></entry><entry><title>Fedora 19 and Gnome 3.8</title><link href="/fedora-19-and-gnome-38.html" rel="alternate"></link><updated>2013-07-01T21:10:15-04:00</updated><author><name>jchain</name></author><id>tag:,2013-07-01:fedora-19-and-gnome-38.html</id><summary type="html">&lt;p&gt;Last night I didn't resist the temptation to enter &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo yum install fedora-upgrade
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Viola, my journey to Fedora 19 began!&lt;/p&gt;
+&lt;p&gt;Every time I upgraded my Linux to the latest release, either Ubuntu or Fedora, I would have to spent
+another day to tweak the new system to make it comfortable to use. The biggest challenge was surely
+the transition from GNOME 2 to 3. Two years have passed and I still can't get used to the new UI.
+Accurately speaking, I really like the new UI elements in GNOME 3 but I just don't like the ways
+that GNOME shell asks me to do things. I think GNOME shell is attractive for new users and
+especially good for tablet. But for a senior user, it is too obtrusive. It wanted to be smart but
+overdid. &lt;/p&gt;
+&lt;p&gt;I appreciated the fallback mode that GNOME 3 provided. I turned off all the fancy animations and
+sticked to the old-fashioned UI. I used &lt;a href="http://code.google.com/p/tint2/"&gt;&lt;code&gt;tint2&lt;/code&gt;&lt;/a&gt; as the window list panel. In Fedora 18 with
+Gnome 3.6, the clock applet surprisingly had a memory leak issue. I disabled the clock applet and
+only used the &lt;code&gt;tint2&lt;/code&gt; panel to show the time. However, sometimes, I missed the weather information.&lt;/p&gt;
+&lt;p&gt;With the advent of GNOME 3.8, the fallback was sadly dropped and the 2D GNOME shell was so ugly that
+I had to make a change. &lt;/p&gt;
+&lt;p&gt;I first tried &lt;a href="http://xfce.org"&gt;&lt;code&gt;Xfce&lt;/code&gt;&lt;/a&gt; and &lt;code&gt;MATE Desktop&lt;/code&gt;. &lt;code&gt;MATE&lt;/code&gt; failed to start on my Fedora 19. I realized that
+I was spoiled by the modern UI of GNOME 3 so the look and feel of &lt;code&gt;Xfce&lt;/code&gt; (based on GTK+ 2) became
+intolerable. Thank God there is &lt;a href="http://cinnamon.linuxmint.com/"&gt;&lt;code&gt;Cinnamon&lt;/code&gt;&lt;/a&gt;. When Cinnamon was first released, I thought it was
+another flamboyant window manager but it turns out sleek and practical. The status bar is very
+compact but full of useful information. Window list? Check. Weather applet? Check. Start menu?
+Check. Transparency effect? Check. GNOME compatible? Check. I don't need many. These are good
+enough. I'm so happy to settle down with Cinnamon. &lt;/p&gt;
+&lt;p&gt;Some other issues with GNOME 3.8 are&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;The transparency of the background of GNOME Terminal can't be set. Not a very big deal. But
+   some users complained about it. &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The upgrade changed my wallpapers for the desktop and the GDM. I really wanted them to be
+   kept.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The theme is broken. Many guys complain about &lt;a href="http://igurublog.wordpress.com/2012/11/05/gnome-et-al-rotting-in-threes/"&gt;that&lt;/a&gt; &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary><category term="Gnome"></category></entry><entry><title>Fix Neocomplcache to Support Perl Complete</title><link href="/fix-neocomplcache-to-support-perl-complete.html" rel="alternate"></link><updated>2013-06-01T20:37:24-04:00</updated><author><name>jchain</name></author><id>tag:,2013-06-01:fix-neocomplcache-to-support-perl-complete.html</id><summary type="html">&lt;p&gt;I have long been jealous about the great auto-complete feature of Python in Vim. With the wonderful
+plugin &lt;a href="https://github.com/Shougo/neocomplcache.vim"&gt;&lt;code&gt;neocomplcache&lt;/code&gt;&lt;/a&gt;, once you type &lt;code&gt;.&lt;/code&gt; after an object, the memeber methods will pop up. &lt;/p&gt;
+&lt;p&gt;I want this feature for Perl when I type &lt;code&gt;-&amp;gt;&lt;/code&gt;. Actually, until today haven't I realized that
+I already own at my finger tip. The answer is &lt;code&gt;neocomplcache&lt;/code&gt; and &lt;a href="https://github.com/c9s/perlomni.vim"&gt;&lt;code&gt;perlomni&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The installation of &lt;code&gt;neocomplcache&lt;/code&gt; and &lt;code&gt;perlomni&lt;/code&gt; is easy. If you use the settings from the help of
+&lt;code&gt;neocomplcache&lt;/code&gt;, the key part to triger &lt;code&gt;neocomplcache&lt;/code&gt; omni-complete by &lt;code&gt;-&amp;gt;&lt;/code&gt; is to change the
+setting in &lt;code&gt;.vimrc&lt;/code&gt; from  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;let g:neocomplcache_omni_patterns.perl = &amp;#39;\h\w*-&amp;gt;\h\w*\|\h\w*::&amp;#39;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;to&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;let g:neocomplcache_omni_patterns.perl = &amp;#39;\h\w*-&amp;gt;\|\h\w*-&amp;gt;\h\w*\|\h\w*::\|\h\w*::\h\w*&amp;#39;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Make sure &lt;code&gt;omnifunc&lt;/code&gt; is &lt;code&gt;PerlComplete&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;A little explanation: &lt;code&gt;\h\w*-&amp;gt;&lt;/code&gt; will triger the popup window, &lt;code&gt;\h\w*-&amp;gt;\h\w*&lt;/code&gt; will complete
+as-you-type. The similar situation goes to &lt;code&gt;::&lt;/code&gt; operator. But do remember that sometimes &lt;code&gt;::&lt;/code&gt; won't
+triger neocomplcache if the package is not based on the OO that perlomni supports. In this case,
+&lt;code&gt;C-X C-O&lt;/code&gt; will always pop up the window.  After this you should see someting like this:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt" src="https://dl.dropboxusercontent.com/u/309872/blog/2013-06-01-perlomni-in-vim.png" /&gt;&lt;/p&gt;</summary></entry><entry><title>Introducing Quickcd</title><link href="/introducing-quickcd.html" rel="alternate"></link><updated>2013-02-08T20:03:24-05:00</updated><author><name>jchain</name></author><id>tag:,2013-02-08:introducing-quickcd.html</id><summary type="html">&lt;p&gt;I just published the code of &lt;code&gt;quickcd&lt;/code&gt; on github. Check it out at &lt;a href="https://github.com/jchain/quickcd"&gt;https://github.com/jchain/quickcd&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;quickcd&lt;/h1&gt;
+&lt;p&gt;A rewrite of &lt;a href="https://github.com/philc/fuzzycd"&gt;fuzzycd&lt;/a&gt; in Perl. You only need to type partial directory names to change
+directories. It saves you a lot of keystrokes and enhances your productivity, especially when you
+navigate in many subdirectories with tricky names.&lt;/p&gt;
+&lt;p&gt;This script is inspired by &lt;a href="https://github.com/philc/fuzzycd"&gt;fuzzycd&lt;/a&gt;. Big thanks to the author for sharing his/her great code.
+The way of intercepting the system &lt;code&gt;cd&lt;/code&gt; is genius. I recommend you to try both scripts and choose
+the one you like most.&lt;/p&gt;
+&lt;h1&gt;Overview&lt;/h1&gt;
+&lt;p&gt;quickcd enables you to use cd with partial directory names. For example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="nv"&gt;box&lt;/span&gt;
+  &lt;span class="o"&gt;=&lt;/span&gt;&amp;gt; Dropbox
+$ &lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="nv"&gt;ok&lt;/span&gt;
+  &lt;span class="o"&gt;=&lt;/span&gt;&amp;gt; Ebook
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If there is more than one directory containing your cd path, you just need to type one more letter
+to take you to the target folder.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;~ $ cd D
+Make a choice:
+[a] Desktop  [b] Documents  [c] Downloads  [d] Dropbox
+a
+Desktop $
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Why rewrite?&lt;/h1&gt;
+&lt;p&gt;The differences:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;When your cd path contains capital letter quickcd will match case sensitively. This way can
+   result in less matches. fuzzycd seems to do case insensitive match all the time.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;quickcd prints out a well-formatted candidates&lt;/strong&gt;. It fits the width of the terminal windows and
+   the columns are aligned neatly. I worked really hard on making this right. fuzzycd candidates
+   are not always aligned.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;quickcd doesn't support multi-level directory nagivation. Its main focus is current directory.
+   fuzzycd supports fuzzy jumps to multi-level directory but I rarely use this feature.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;quickcd is written in Perl. Yep, I like Perl! fuzzycd is written in Ruby.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1&gt;Setup&lt;/h1&gt;
+&lt;p&gt;This following instruction are shamelessly copied from fuzzycd's README.&lt;/p&gt;
+&lt;p&gt;Modify your ~/.profile (or ~/.bashrc, depending your operating system) and add the following lines.
+This assumes you put fuzzycd in the ~/scripts/ directory.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="x"&gt;export PATH=~/scripts/fuzzycd/:&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;span class="x"&gt;source ~/scripts/fuzzycd/fuzzycd_bash_wrapper.sh&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This will effectively wrap the builtin bash cd command with the fuzzy cd command. Enjoy!&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;: If you have any other shell plugins which try to redefine the "cd" function (e.g.
+&lt;a href="https://rvm.beginrescueend.com/rvm"&gt;rvm&lt;/a&gt; does this), make sure that the
+&lt;code&gt;source ... fuzzycd_bash_wrapper.sh&lt;/code&gt; line comes last in your bash profile. fuzzycd plays nicely with
+other bash modification plugins, but it should be loaded last.&lt;/p&gt;</summary></entry><entry><title>Build Feh from source and install to Home directory</title><link href="/build-feh-from-source-and-install-to-home-directory.html" rel="alternate"></link><updated>2013-01-31T15:39:00-05:00</updated><author><name>jchain</name></author><id>tag:,2013-01-31:build-feh-from-source-and-install-to-home-directory.html</id><summary type="html">&lt;p&gt;&lt;a href="http://feh.finalrewind.org/"&gt;&lt;code&gt;Feh&lt;/code&gt;&lt;/a&gt; is a lightweight image viewer for Linux. Its source code doesn't ship the Autoconf script
+and only Makefile. The customization is done by modifying the file &lt;code&gt;config.mk&lt;/code&gt;. In my case I would
+like to install it to my HOME directory. Plus, I have installed the dependency library &lt;code&gt;giblib&lt;/code&gt; into
+HOME directory before so I have to specify the search path for compiler and linker. Here is what
+I got so far:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;PACKAGE&lt;/span&gt; &lt;span class="o"&gt;?=&lt;/span&gt; feh
+&lt;span class="nv"&gt;VERSION&lt;/span&gt; &lt;span class="o"&gt;?=&lt;/span&gt; 2.8
+
+&lt;span class="c"&gt;# Prefix for all installed files&lt;/span&gt;
+&lt;span class="c"&gt;# PREFIX ?= /usr/local&lt;/span&gt;
+&lt;span class="nv"&gt;PREFIX&lt;/span&gt; &lt;span class="o"&gt;?=&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;HOME&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+
+&lt;span class="c"&gt;# Directories for manuals, executables, docs, data, etc.&lt;/span&gt;
+&lt;span class="nv"&gt;main_dir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;DESTDIR&lt;/span&gt;&lt;span class="si"&gt;}${&lt;/span&gt;&lt;span class="nv"&gt;PREFIX&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;span class="nv"&gt;man_dir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;main_dir&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/share/man
+&lt;span class="nv"&gt;bin_dir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;main_dir&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/bin
+&lt;span class="nv"&gt;doc_dir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;main_dir&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/share/doc/feh
+&lt;span class="nv"&gt;image_dir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;main_dir&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/share/feh/images
+&lt;span class="nv"&gt;font_dir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;main_dir&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/share/feh/fonts
+&lt;span class="nv"&gt;example_dir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;main_dir&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/share/doc/feh/examples
+
+&lt;span class="c"&gt;# default CFLAGS&lt;/span&gt;
+&lt;span class="nv"&gt;CFLAGS&lt;/span&gt; &lt;span class="o"&gt;?=&lt;/span&gt; -g -O2
+&lt;span class="nv"&gt;CFLAGS&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; -Wall -Wextra -pedantic
+
+&lt;span class="nv"&gt;curl&lt;/span&gt; &lt;span class="o"&gt;?=&lt;/span&gt; 1
+&lt;span class="nv"&gt;debug&lt;/span&gt; &lt;span class="o"&gt;?=&lt;/span&gt; 0
+&lt;span class="nv"&gt;help&lt;/span&gt; &lt;span class="o"&gt;?=&lt;/span&gt; 0
+&lt;span class="nv"&gt;xinerama&lt;/span&gt; &lt;span class="o"&gt;?=&lt;/span&gt; 1
+&lt;span class="nv"&gt;exif&lt;/span&gt; &lt;span class="o"&gt;?=&lt;/span&gt; 0
+
+&lt;span class="cp"&gt;ifeq (${curl},1)&lt;/span&gt;
+    CFLAGS +&lt;span class="o"&gt;=&lt;/span&gt; -DHAVE_LIBCURL
+    LDLIBS +&lt;span class="o"&gt;=&lt;/span&gt; -lcurl
+    &lt;span class="nv"&gt;MAN_CURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; enabled
+&lt;span class="cp"&gt;else&lt;/span&gt;
+    &lt;span class="nv"&gt;MAN_CURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; disabled
+&lt;span class="cp"&gt;endif&lt;/span&gt;
+
+&lt;span class="cp"&gt;ifeq (${debug},1)&lt;/span&gt;
+    CFLAGS +&lt;span class="o"&gt;=&lt;/span&gt; -DDEBUG -O0
+    &lt;span class="nv"&gt;MAN_DEBUG&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; . This is a debug build.
+&lt;span class="cp"&gt;else&lt;/span&gt;
+    &lt;span class="nv"&gt;MAN_DEBUG&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+&lt;span class="cp"&gt;endif&lt;/span&gt;
+
+&lt;span class="cp"&gt;ifeq (${help},1)&lt;/span&gt;
+    CFLAGS +&lt;span class="o"&gt;=&lt;/span&gt; -DINCLUDE_HELP
+&lt;span class="cp"&gt;endif&lt;/span&gt;
+
+&lt;span class="cp"&gt;ifeq (${stat64},1)&lt;/span&gt;
+    CFLAGS +&lt;span class="o"&gt;=&lt;/span&gt; -D_FILE_OFFSET_BITS&lt;span class="o"&gt;=&lt;/span&gt;64
+&lt;span class="cp"&gt;endif&lt;/span&gt;
+
+&lt;span class="cp"&gt;ifeq (${xinerama},1)&lt;/span&gt;
+    CFLAGS +&lt;span class="o"&gt;=&lt;/span&gt; -DHAVE_LIBXINERAMA
+    LDLIBS +&lt;span class="o"&gt;=&lt;/span&gt; -lXinerama
+    &lt;span class="nv"&gt;MAN_XINERAMA&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; enabled
+&lt;span class="cp"&gt;else&lt;/span&gt;
+    &lt;span class="nv"&gt;MAN_XINERAMA&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; disabled
+&lt;span class="cp"&gt;endif&lt;/span&gt;
+
+&lt;span class="cp"&gt;ifeq (${exif},1)&lt;/span&gt;
+    CFLAGS +&lt;span class="o"&gt;=&lt;/span&gt; -DHAVE_LIBEXIF
+    LDLIBS +&lt;span class="o"&gt;=&lt;/span&gt; -lexif
+    &lt;span class="nv"&gt;MAN_EXIF&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; enabled
+&lt;span class="cp"&gt;else&lt;/span&gt;
+    &lt;span class="nv"&gt;MAN_EXIF&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; disabled
+&lt;span class="cp"&gt;endif&lt;/span&gt;
+
+
+&lt;span class="c"&gt;# Uncomment this to use dmalloc&lt;/span&gt;
+&lt;span class="c"&gt;#CFLAGS += -DWITH_DMALLOC&lt;/span&gt;
+
+&lt;span class="c"&gt;# CFLAGS += -DPREFIX=\&amp;quot;${PREFIX}\&amp;quot; \&lt;/span&gt;
+    -DPACKAGE&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="se"&gt;\&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PACKAGE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="se"&gt;\&amp;quot;&lt;/span&gt; -DVERSION&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="se"&gt;\&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="se"&gt;\&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;CFLAGS&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; -DPREFIX&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="se"&gt;\&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PREFIX&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="se"&gt;\&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+    -DPACKAGE&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="se"&gt;\&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PACKAGE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="se"&gt;\&amp;quot;&lt;/span&gt; -DVERSION&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="se"&gt;\&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="se"&gt;\&amp;quot;&lt;/span&gt; -I&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PREFIX&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/include
+
+&lt;span class="c"&gt;# LDLIBS += -lm -lpng -lX11 -lImlib2 -lgiblib&lt;/span&gt;
+&lt;span class="nv"&gt;LDLIBS&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; -lm -lpng -lX11 -lImlib2 -lgiblib -L&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PREFIX&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/lib64/
+&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>Install nVidia Driver on Fedora 17: A Non-typical Case</title><link href="/install-nvidia-driver-on-fedora-17-a-non-typical-case.html" rel="alternate"></link><updated>2012-11-28T02:10:00-05:00</updated><author><name>jchain</name></author><id>tag:,2012-11-28:install-nvidia-driver-on-fedora-17-a-non-typical-case.html</id><summary type="html">&lt;p&gt;Finally I succeeded in installing the nVidia driver on my old Dell Inspiron 530 geared an old nVidia
+8300 GS video card running Fedora 17 i386. Here is a quick recap on my journey with Fedora 17. &lt;/p&gt;
+&lt;p&gt;I started constantly using Fedora 17 half a year ago. I had used the default open source nVidia
+driver &lt;code&gt;nouveau&lt;/code&gt; happily until the system updated the kernel from the 3.3.4 to some newer version.
+None of these newer kernels worked well with the &lt;code&gt;nouveau&lt;/code&gt; driver. A common issue was the mouse was
+drawn as a big block and the GUI color was totally garbage. I tried to install the nVidia driver
+either according to &lt;a href="http://www.if-not-true-then-false.com/2012/fedora-17-nvidia-guide/"&gt;what it said&lt;/a&gt; or using the installer from the official website of nVidia.
+But neither way worked. I could see the mouse was spinning but the whole system kept froze. So I
+excluded the kernel update in &lt;code&gt;yum.conf&lt;/code&gt; under &lt;code&gt;/etc&lt;/code&gt;. Everything was fine until one day my Fedora
+Linux suddenly crashed with a kernel panic error. The traceback message indicated it was about a
+kernel bug in the ext4 file system&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kernel BUG at fs/ext4/extents.c
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Initially I thought it could be due to certain bad blocks on my hard drive. But soon the hacker news
+confirmed that the bug in the kernel was the culprit. After several sudden losses of my working
+sessions I couldn't wait for any more seconds to update the kernel. And I had to make the Xorg
+server work too.&lt;/p&gt;
+&lt;p&gt;It really bugged me that the nVidia driver didn't work on my Fedora 17. I booted from Ubuntu Linux
+installed on an external USB disk. And the nVidia driver worked fine under it. There must be
+something wrong with &lt;code&gt;akmod-nvidia&lt;/code&gt; or the official driver.&lt;/p&gt;
+&lt;p&gt;Accidentally I found the solution. It appeared that my 8300GS card was not supported very well in
+the recent 3xx driver. I guess this type was not very common. I tried &lt;code&gt;akmod-nvidia-173xx&lt;/code&gt; and X
+server started this time. In my case, I didn't need to do this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Remove / disable nouveau drivers from kernel initramfs
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The remaining issue was the OpenGL apps were indirectly rendered. It was due to the nVidia GL
+library was not automatically loaded. The system still used the mesa GL to do the software
+rendering. A workaround is to put the following line in &lt;code&gt;.bashrc&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="x"&gt;export LD_LIBRARY_PATH=/usr/lib/nvidia:&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;LD_LIBRARY_PATH&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Another problem was the dual displays. The default &lt;code&gt;xorg.conf&lt;/code&gt; generated by &lt;code&gt;akmod-nvidia-173xx&lt;/code&gt;
+didn't support the twin views. Additionally, &lt;code&gt;nvidia-settings&lt;/code&gt; complained the X11 driver was too old
+to be configured. Fortunately I had a copy of working &lt;code&gt;xorg.conf&lt;/code&gt; at my Ubuntu partition. And here
+is what it looks right now.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# RPM Fusion - nvidia-173xx-xorg.conf
+# 
+Section &amp;quot;Monitor&amp;quot;
+    # HorizSync source: edid, VertRefresh source: edid
+    Identifier     &amp;quot;Monitor0&amp;quot;
+    VendorName     &amp;quot;Unknown&amp;quot;
+    ModelName      &amp;quot;DELL E228WFP&amp;quot;
+    HorizSync       30.0 - 83.0
+    VertRefresh     56.0 - 75.0
+    Option         &amp;quot;DPMS&amp;quot;
+EndSection
+
+Section &amp;quot;Device&amp;quot;
+    Identifier  &amp;quot;Device0&amp;quot;
+    Driver      &amp;quot;nvidia&amp;quot;
+    Option      &amp;quot;AddARGBGLXVisuals&amp;quot; &amp;quot;true&amp;quot;
+EndSection
+
+Section &amp;quot;Screen&amp;quot;
+    Identifier     &amp;quot;Screen0&amp;quot;
+    Device         &amp;quot;Device0&amp;quot;
+    Monitor        &amp;quot;Monitor0&amp;quot;
+    DefaultDepth    24
+    Option         &amp;quot;TwinView&amp;quot; &amp;quot;1&amp;quot;
+    Option         &amp;quot;TwinViewXineramaInfoOrder&amp;quot; &amp;quot;DFP-0&amp;quot;
+    Option         &amp;quot;metamodes&amp;quot; &amp;quot;DFP: nvidia-auto-select +0+0, CRT: nvidia-auto-select +1680+0&amp;quot;
+    SubSection     &amp;quot;Display&amp;quot;
+        Depth       24
+    EndSubSection
+EndSection
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I'm so excited to have my Fedora back in good shape and I want share my story with you. Hopefully it
+will help you if you are facing the same problem.&lt;/p&gt;</summary></entry><entry><title>Quickly look up a word or phrase from commandline</title><link href="/quickly-look-up-a-word-or-phrase-from-commandline.html" rel="alternate"></link><updated>2012-09-28T19:46:55-04:00</updated><author><name>jchain</name></author><id>tag:,2012-09-28:quickly-look-up-a-word-or-phrase-from-commandline.html</id><summary type="html">&lt;p&gt;I wrote two very short Bash functions to help me quickly look up a word or phrase using
+&lt;a href="http://elinks.or.cz/"&gt;elinks&lt;/a&gt;. You can use w3m as you wish but elinks shows a better layout in my
+eyes.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# look up on urbandictionary.com&lt;/span&gt;
+
+ub &lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+ &lt;span class="nv"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$@&lt;/span&gt;
+ elinks www.urbandictionary.com/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;a&lt;/span&gt;&lt;span class="p"&gt;// /%20&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="c1"&gt;# look up on thefreedictionary.com&lt;/span&gt;
+fd &lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+ &lt;span class="nv"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$@&lt;/span&gt;
+ elinks www.thefreedictionary.com/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;a&lt;/span&gt;&lt;span class="p"&gt;// /+&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Usage:
+    ub your_word
+    fd your_word&lt;/p&gt;</summary><category term="Bash"></category><category term="Linux"></category><category term="tips"></category></entry><entry><title>MC (Midnight-Commander) 4.8.5 is slow, try 4.8.6</title><link href="/mc-midnight-commander-4-8-5-is-slow-try-4-8-6.html" rel="alternate"></link><updated>2012-09-28T04:57:17-04:00</updated><author><name>jchain</name></author><id>tag:,2012-09-28:mc-midnight-commander-4-8-5-is-slow-try-4-8-6.html</id><summary type="html">&lt;p&gt;Recently MC was upgraded from 4.7.x to 4.8.5 on my 32bit Fedora 17. The start-up time was totally
+unbearable, around 15 sec to start. I compiled the latest release v4.8.6 and that time dropped to
+the negligible (&amp;lt; 1sec).&lt;/p&gt;</summary><category term="Linux"></category></entry><entry><title>Fix the broken Bash file and directory name completion on Ubuntu Linux</title><link href="/fix-the-broken-bash-file-and-directory-name-completion-on-ubuntu-linux.html" rel="alternate"></link><updated>2012-06-02T22:12:54-04:00</updated><author><name>jchain</name></author><id>tag:,2012-06-02:fix-the-broken-bash-file-and-directory-name-completion-on-ubuntu-linux.html</id><summary type="html">&lt;p&gt;I didn't remember ever since when my Bash filename and directory name completion functioned wackily. Everytime I hit 'tab' to complete a directory name, Bash didn't append the backslash nor printed out candidates (just like what it described like &lt;a href="http://ubuntuforums.org/showthread.php?t=1053832"&gt;here&lt;/a&gt; and &lt;a href="http://timlabath.com/words/2011/05/10/ubuntu-11-04-and-broken-bash-completion/"&gt;here&lt;/a&gt;). It drove me banana. Meanwhile, my Bash worked very well under other Linux distributions (openSUSE, CentOS). The culprit was the a Bash completion file for adobe acrobat reader under /etc/bash_completion.d/. Delete it and the problem will be solved.&lt;/p&gt;</summary><category term="Bash"></category><category term="Linux"></category></entry><entry><title>Switch your Linux laptop display to a projector</title><link href="/switch-your-linux-laptop-display-to-a-projector.html" rel="alternate"></link><updated>2012-05-04T03:45:31-04:00</updated><author><name>jchain</name></author><id>tag:,2012-05-04:switch-your-linux-laptop-display-to-a-projector.html</id><summary type="html">&lt;p&gt;In a job interview two months ago, no matter how hard I tried I simply couldn't export the screen of my laptop running Ubuntu Linux to a projector. It was the first time that I linked a Linux computer to a projector. Luckily the interviewers were generous enough and the four people of us sat together tightly to watch the slides on my 15" laptop screen. They gave me a job offer in the end but I just hoped that I could have done a better presentation that day.&lt;/p&gt;
+&lt;p&gt;I searched for a solution for that on the web. It seemed a headache for many Linux users. Finally I ran into &lt;a href="http://willem.engen.nl/projects/disper/"&gt;Disper&lt;/a&gt;. It solved my problem perfectly.&lt;/p&gt;
+&lt;p&gt;Read on how to do it in more details &lt;a href="http://www.baibhav.com.np/article/6-computer-tips-a-tricks/32-projector-external-monitor-display-problem-on-ubuntu-1110-solved-.html"&gt;here&lt;/a&gt;&lt;/p&gt;</summary><category term="Linux"></category><category term="tips"></category></entry><entry><title>One tip for jhbuild when make error is like this</title><link href="/one-tip-for-jhbuild-when-make-error-is-like-this.html" rel="alternate"></link><updated>2012-03-28T21:02:43-04:00</updated><author><name>jchain</name></author><id>tag:,2012-03-28:one-tip-for-jhbuild-when-make-error-is-like-this.html</id><summary type="html">&lt;p&gt;Here is the error message I got today
+*** No rule to make target &lt;code&gt;gtkcolorsel.c', needed by&lt;/code&gt;libgtk_3_la-gtkcolorsel.lo'. Stop&lt;/p&gt;
+&lt;p&gt;The reason for that is because the output files from previous builds make Automake unhappy.&lt;/p&gt;
+&lt;p&gt;The solution is
+enter the jhbuild shell, and do: git clean -xdf&lt;/p&gt;
+&lt;p&gt;More details from GTK+ IRC: automake does not like when files get moved around so you need to clean up the build tree and get it back into a pristine state&lt;/p&gt;</summary><category term="GTK"></category></entry><entry><title>Finally Gnome 3 on openSUSE</title><link href="/finally-gnome-3-on-opensuse.html" rel="alternate"></link><updated>2012-02-09T17:08:38-05:00</updated><author><name>jchain</name></author><id>tag:,2012-02-09:finally-gnome-3-on-opensuse.html</id><summary type="html">&lt;p&gt;After upgrading from openSUSE-11.4 to 12.1, I have spent two days on tweaking GNOME3 to make it
+usable. Phew.&lt;/p&gt;
+&lt;p&gt;Initially, GNOME3 (gnome-shell 3.2 precisely) was unable to start at all. .xsession-errors showed
+that Clutter failed to start. A deeper reason was that Clutter wasn't able to find the proper nVidia
+graphics driver libGL*.so. If you type&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ldd /usr/bin/gnome-shell
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You would notice that libGL.so.1 was pointing to nothing. That was bad.&lt;/p&gt;
+&lt;p&gt;I narrowed down the culprit in my .bashrc. For some reason I have always modified LD_LIBRARY_PATH to
+meet my needs. Everything worked fine until upgrade to openSUSE-12.1. I found from /etc/ld.conf.d
+that the nVidia GL libraries had been installed in /usr/X11R6/lib64 and /usr/X11R6/lib which was
+missed in my modified LD_LIBRARY_PATH. So the solution was to add /usr/X11R6/lib64:/usr/X11R6/lib in
+the front of LD_LIBRARY_PATH. It seemed to have to be the first two in my case. YMMV. I didn't run
+into the same problem on Ubuntu since the nVidia driver was installed somewhere else.&lt;/p&gt;
+&lt;p&gt;OK. Gnome shell started but soon I noticed that there was some screen refresh glitches in
+gnome-terminal. Every time I typed commands where the cursor was near the bottom, the screen failed
+to refresh or output.  I hadn't seen it in KDE running the same program. So I guess it again was
+related with Gnome-shell. A quick search on the web told me that it was due to some bugs in nVidia
+driver with Clutter and  the work around was to add the following line into .bashrc&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;export CLUTTER_PAINT=disable-clipped-redraws:disable-culling
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Again I didn't run into this issue in Ubuntu.&lt;/p&gt;
+&lt;p&gt;All right. Gnome-terminal worked properly. After further installs of Gnome shell extensions like
+Application Menu, Places Status Indicator, and &lt;a href="http://code.google.com/p/tint2/"&gt;tint2&lt;/a&gt;, finally my
+new GNOM 3 was ready for daily use.&lt;/p&gt;</summary><category term="GNOME"></category><category term="Linux"></category><category term="openSUSE"></category></entry><entry><title>Perlbrew and openSUSE</title><link href="/perlbrew-and-opensuse.html" rel="alternate"></link><updated>2012-02-05T06:08:45-05:00</updated><author><name>jchain</name></author><id>tag:,2012-02-05:perlbrew-and-opensuse.html</id><summary type="html">&lt;p&gt;I have heard about how great &lt;a href="http://perlbrew.pl/"&gt;perlbrew&lt;/a&gt; is from time to time on the web but
+I have never had a chance to play with it until today. After my openSUSE was upgraded from 11.x to
+12.x and system-wide Perl was upgraded from 5.12 to 5.14, my local Perl modules was broken. I think
+it is a good idea to have access to multiple Perl distributions and a good management among them.
+Soon I realized that it was time to give perlbrew a try. I tried to install a locally built
+Perl-5.14.2 by the command&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;perlbrew install perl-5.14.2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;But quickly it failed with the exactly the same error like
+&lt;a href="http://www.gossamer-threads.com/lists/perl/porters/234587"&gt;this&lt;/a&gt;. It was about something wrong with
+ODBM_File. And this problem seems specific to openSUSE. As the post link said, the solution is&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;perlbrew install perl-5.14.2 -D noextension=ODBM_File
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This made a good build of perl-5.14.2. I further installed cpanm with perlbrew and replaced the
+system-wide cpanm. I've found it a better way to install CPAN modules since by doing so cpanm will
+install modules for difference versions of Perl in separate locations. For example, modules for
+Perl-5.12 won't conflict with Perl-5.14. This is just what I want.&lt;/p&gt;
+&lt;p&gt;Happy perlbrewing...&lt;/p&gt;</summary><category term="Perl"></category></entry><entry><title>Make apt like zypper</title><link href="/make-apt-like-zypper.html" rel="alternate"></link><updated>2012-02-01T23:43:17-05:00</updated><author><name>jchain</name></author><id>tag:,2012-02-01:make-apt-like-zypper.html</id><summary type="html">&lt;p&gt;&lt;a href="http://en.wikipedia.org/wiki/Advanced_Packaging_Tool"&gt;apt&lt;/a&gt; is one of the reasons that I like
+Debian/Ubuntu, but type apt-cache search, apt-cache show, apt-get install, apt-get update, apt-get
+upgrade is so verbose. To make life easier, I have stolen some ideas from
+&lt;a href="http://en.wikipedia.org/wiki/ZYpp"&gt;zypper&lt;/a&gt; from OpenSUSE by adding the following lines into my
+.bashrc:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;apt&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+ &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;se&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+ apt-cache search &lt;span class="nv"&gt;$2&lt;/span&gt;
+ &lt;span class="k"&gt;fi&lt;/span&gt;
+
+ &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;if&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+ apt-cache show &lt;span class="nv"&gt;$2&lt;/span&gt;
+ &lt;span class="k"&gt;fi&lt;/span&gt;
+
+ &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;up&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+ sudo apt-get update
+ &lt;span class="k"&gt;fi&lt;/span&gt;
+
+ &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;upgrade&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+ sudo apt-get upgrade
+ &lt;span class="k"&gt;fi&lt;/span&gt;
+
+ &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;in&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+ sudo apt-get install &lt;span class="nv"&gt;$2&lt;/span&gt;
+ &lt;span class="k"&gt;fi&lt;/span&gt;
+
+ &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;rm&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+ sudo apt-get remove &lt;span class="nv"&gt;$2&lt;/span&gt;
+ &lt;span class="k"&gt;fi&lt;/span&gt;
+ &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now you can just type 'apt se', 'apt up', 'apt upgrade', 'apt in' and 'apt if' to do the similar things.&lt;/p&gt;</summary><category term="Bash"></category><category term="Linux"></category><category term="tips"></category><category term="Ubuntu"></category></entry><entry><title>Yet another rename</title><link href="/yet-another-rename.html" rel="alternate"></link><updated>2011-12-17T18:41:51-05:00</updated><author><name>jchain</name></author><id>tag:,2011-12-17:yet-another-rename.html</id><summary type="html">&lt;p&gt;I had many randomly named files and directories under my working project. Today I wanted to organize them in a more consistent naming convention. So I needed a file rename tool. Even though Linux base installation has a command 'rename', I soon found this Perl app &lt;a href="http://search.cpan.org/~pederst/rename-1.8/bin/rename.PL"&gt;rename&lt;/a&gt; is better thanks to Perl's powerful regex. Plus, its dry-run option is also a very good idea.&lt;/p&gt;</summary><category term="Perl"></category><category term="Productivity"></category><category term="tips"></category></entry><entry><title>Quick print: a little trick for gdb setting</title><link href="/quick-print-a-little-trick-for-gdb-setting.html" rel="alternate"></link><updated>2011-12-02T23:10:49-05:00</updated><author><name>jchain</name></author><id>tag:,2011-12-02:quick-print-a-little-trick-for-gdb-setting.html</id><summary type="html">&lt;p&gt;Today I would like to share a little trick that I have adapted and used for a while. It is for
+&lt;a href="en.wikipedia.org/wiki/GNU_Debugger"&gt;gdb&lt;/a&gt;. Before your reading the rest of the post, and if you have
+no idea about the customization of gdb, please read
+&lt;a href="http://zandyware.wordpress.com/2011/05/25/a-must-read-for-every-gdb-learner/"&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;If you use gdb frequently, chances are you have to type the command 'print' or 'p' to examine the
+value of variable many many times. A common case is like this: you type 'p foo' to see the value of
+'foo'. It turns out that 'foo' is a pointer, and you have to type 'p *foo' again in the commandline.
+Or you have to type 'ptype foo' to find out the type definition of 'foo'. Tedious. This small piece
+of gdb macro to make your life easier. Every time you type 'p foo', you just scroll up the history
+and type '1', 'p foo 1' shows the dereferenced value, or typing '2' gives you the type definition of
+'foo'. Copy and paste into your ~/.gdbinit &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;define&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;
+ &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;argc&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+   &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;arg0&lt;/span&gt;
+ &lt;span class="k"&gt;else&lt;/span&gt;
+   &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;arg1&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+     &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;arg0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+   &lt;span class="k"&gt;else&lt;/span&gt;
+     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;arg1&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+       &lt;span class="n"&gt;ptype&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;arg0&lt;/span&gt;
+     &lt;span class="n"&gt;end&lt;/span&gt;
+   &lt;span class="n"&gt;end&lt;/span&gt;
+ &lt;span class="n"&gt;end&lt;/span&gt;
+&lt;span class="n"&gt;end&lt;/span&gt;
+&lt;span class="n"&gt;document&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;
+   &lt;span class="n"&gt;Print&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;variable&lt;/span&gt; &lt;span class="n"&gt;information&lt;/span&gt; &lt;span class="n"&gt;quickly&lt;/span&gt;
+&lt;span class="n"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="GDB"></category><category term="Linux"></category></entry><entry><title>Don't show the hidden files in GTK+ application open file dialog</title><link href="/dont-show-the-hidden-files-in-gtk-application-open-file-dialog.html" rel="alternate"></link><updated>2011-11-18T07:55:05-05:00</updated><author><name>jchain</name></author><id>tag:,2011-11-18:dont-show-the-hidden-files-in-gtk-application-open-file-dialog.html</id><summary type="html">&lt;p&gt;It is quite annoying when you open a file selection dialog in a typical GTK+ application a pile of hidden files and directories occupy the window. &lt;strong&gt;Solution:&lt;/strong&gt; edit ~/.config/gtk-2.0/gtkfilechooser.ini to disable the option 'ShowHidden'&lt;/p&gt;</summary><category term="GNOME"></category><category term="GTK"></category><category term="Linux"></category></entry><entry><title>Midnight commander's new user data directory</title><link href="/midnight-commanders-new-user-data-directory.html" rel="alternate"></link><updated>2011-11-09T22:00:24-05:00</updated><author><name>jchain</name></author><id>tag:,2011-11-09:midnight-commanders-new-user-data-directory.html</id><summary type="html">&lt;p&gt;It seems that the user-specific data/config directory of midnight commander 4.8.x is under
+$HOME/.local/share/mc and $HOME/.config/mc. However the previous version(4.7.x) is looking for
+$HOME/.mc. You can verify that by typing&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mc -F
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Personally I don't like this change since I prefer to a single directory for the convenience of
+storage and backup of my config files. Your skin setting probably take no effect after upgrading to
+4.8.x. Place your skin files to &lt;code&gt;$HOME/.local/share/mc/skins&lt;/code&gt; and modify &lt;code&gt;$HOME/.config/mc/ini&lt;/code&gt;&lt;/p&gt;</summary><category term="Linux"></category><category term="tips"></category></entry><entry><title>GNU Parallell, make best use of your multicore computer</title><link href="/gnu-parallell-make-best-use-of-your-multicore-computer.html" rel="alternate"></link><updated>2011-10-15T00:13:16-04:00</updated><author><name>jchain</name></author><id>tag:,2011-10-15:gnu-parallell-make-best-use-of-your-multicore-computer.html</id><summary type="html">&lt;p&gt;In my research work, I have to run many many times of the same program with different parameters.
+I wrote bash files to make my life easier. But single process of bash is very slow considering
+I have a decent computer with 24 cpu cores. My old way to make better use of multicore CPU was to
+split my jobs into several separate bash files and run them simultaneously. You can imagine that it
+is far from productive when editing these files. They contain overwhelmingly repeated text.&lt;/p&gt;
+&lt;p&gt;GNU &lt;a href="http://www.gnu.org/s/parallel"&gt;parallel&lt;/a&gt; comes to rescue. I first ran into this post
+&lt;a href="http://pebblesinthesand.wordpress.com/2008/05/22/a-srcipt-for-running-processes-in-parallel-in-bash/"&gt;http://pebblesinthesand.wordpress.com/2008/05/22/a-srcipt-for-running-processes-in-parallel-in-bash/&lt;/a&gt;.
+But I quickly found GNU parallel was a better choice. Fully loaded with detailed documentation.
+Plus, it was written in Perl. As you may know, I'm a Perl fan:-). Now my batch file has become like
+this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;seq 1 100 | parallel -j 20 single_run.sh {}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Voilà!&lt;/p&gt;</summary><category term="Linux"></category><category term="tips"></category></entry><entry><title>Initial impressions of Ubuntu 11.10 Unity and Gnome3</title><link href="/initial-impressions-of-ubuntu-11-10-unity-and-gnome3.html" rel="alternate"></link><updated>2011-10-07T21:35:46-04:00</updated><author><name>jchain</name></author><id>tag:,2011-10-07:initial-impressions-of-ubuntu-11-10-unity-and-gnome3.html</id><summary type="html">&lt;p&gt;As the release of Ubuntu 11.04 is approaching, I took a bold move to upgrade my Ubuntu 11.04 to 11.10 last night. Maybe not that bold, since the Ubuntu 11.10 is supposed to be stable enough at this moment. I played around with Unity and Gnome3 each for a while and finally chose Unity as my default desktop manager.&lt;/p&gt;
+&lt;p&gt;At the very beginning, my wireless didn't work. It turned out that the wireless adapter drive was buggy with Linux kernel 3.x.x. After switching back to 2.8.x, wireless connection was alive. Both Unity and Gnome3 have impressive visual efftects at first glance. But after a while, especially in term of the usability, I would prefer Unity. Why?&lt;/p&gt;
+&lt;p&gt;I like the title bar/top panel in Unity very much. It combines the functionality of the conventional window title bar and the top panel. Sure, it mimics Mac OSX but this feature save a lot of laptop screen real estate. While in Gnome3, a time applet seemingly takes up the whole top panel and you can't place app shortcuts into it rendering itself less useful.&lt;/p&gt;
+&lt;p&gt;Both desktop managers have dropped 'Window List' at the bottom. I have to say I need that back badly. I feel very uncomfortable without it showing. I have no idea how to switch between windows quickly if you have opened 10+ windows. 'Alt+Tab' is not the right solution. I even think of switching to tiling window manager like wmii, xmonad. Luckily someone suggests &lt;a href="http://code.google.com/p/tint2/"&gt;tint2&lt;/a&gt; as replacement. I will give it a try immediately when back home.&lt;/p&gt;</summary><category term="Linux"></category></entry><entry><title>Use notify-send to notify the finish of long run process</title><link href="/use-notify-send-to-notify-the-finish-of-long-run-process.html" rel="alternate"></link><updated>2011-08-25T20:21:46-04:00</updated><author><name>jchain</name></author><id>tag:,2011-08-25:use-notify-send-to-notify-the-finish-of-long-run-process.html</id><summary type="html">&lt;p&gt;This Linux executable is part of the package 'libnotify'. With it you can notify the finish of long run process, like&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;./LongRunProcess | notify-send Done "LongRunProcess is done"&lt;/p&gt;
+&lt;/blockquote&gt;</summary><category term="Linux"></category><category term="tips"></category></entry><entry><title>Automated Linux GUI testing tools</title><link href="/automated-linux-gui-testing-tools.html" rel="alternate"></link><updated>2011-05-17T06:17:31-04:00</updated><author><name>jchain</name></author><id>tag:,2011-05-17:automated-linux-gui-testing-tools.html</id><summary type="html">&lt;p&gt;I was involved in a tedious GUI testing by hand this week. To make my life easier, I researched online some automated GUI testing framework in this weekend. I quickly spotted four opensource tools: &lt;a href="https://fedorahosted.org/dogtail/"&gt;dogtail&lt;/a&gt;, &lt;a href="http://medsphere.org/community/project/strongwind"&gt;strongwind&lt;/a&gt;, &lt;a href="http://ldtp.freedesktop.org/wiki/"&gt;ldtp&lt;/a&gt; and &lt;a href="http://en.wikipedia.org/wiki/Xnee"&gt;xnee&lt;/a&gt;. After playing around with each of them for a while, I finally picked ldtp as my first choice since it is most active maintained and mature. Moreover, &lt;a href="http://mago.ubuntu.com/"&gt;mago&lt;/a&gt; makes life even easier.&lt;/p&gt;</summary><category term="Linux"></category><category term="Testing"></category><category term="Tools"></category></entry><entry><title>Userful command: scan local ports</title><link href="/userful-command-scan-local-ports.html" rel="alternate"></link><updated>2011-05-17T06:03:15-04:00</updated><author><name>jchain</name></author><id>tag:,2011-05-17:userful-command-scan-local-ports.html</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;netstat -antuwp | egrep &amp;quot;(^[^t])|(^tcp.*LISTEN)&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>Tip: switch from GDB TUI and plain mode</title><link href="/tip-switch-from-gdb-tui-and-plain-mode.html" rel="alternate"></link><updated>2011-05-14T07:01:31-04:00</updated><author><name>jchain</name></author><id>tag:,2011-05-14:tip-switch-from-gdb-tui-and-plain-mode.html</id><summary type="html">&lt;p&gt;Try the Ctrl-X A shortcut in GDB.&lt;/p&gt;</summary><category term="GDB"></category><category term="tips"></category></entry><entry><title>Update your DISPLAY environment variable for Nomachine and Screen user</title><link href="/update-your-display-environment-variable-for-nomachine-and-screen-user.html" rel="alternate"></link><updated>2011-03-12T06:16:18-05:00</updated><author><name>jchain</name></author><id>tag:,2011-03-12:update-your-display-environment-variable-for-nomachine-and-screen-user.html</id><summary type="html">&lt;p&gt;If you are Nomachine and GNU Screen user, have you been annoyed by the problem that you can't start
+GUI program in a screen session? The reason to the problem is that the environment variable DISPLAY
+is not properly set when you attach a screen session. There are two posts talking about how to
+update environment variables such as SSH and DISPLAY  to make the life much easier.&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://samrowe.com/wordpress/ssh-agent-and-gnu-screen/"&gt;http://samrowe.com/wordpress/ssh-agent-and-gnu-screen&lt;/a&gt;/&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://alan.lamielle.net/2009/03/09/environment-variables-and-gnu-screen"&gt;http://alan.lamielle.net/2009/03/09/environment-variables-and-gnu-screen &lt;/a&gt;&lt;/p&gt;</summary><category term="Bash"></category><category term="Linux"></category><category term="Screen"></category><category term="tips"></category></entry><entry><title>Updated to Libreoffice-3.3 and Tmux-1.4</title><link href="/updated-to-libreoffice-3-3-and-tmux-1-4.html" rel="alternate"></link><updated>2010-12-30T23:03:38-05:00</updated><author><name>jchain</name></author><id>tag:,2010-12-30:updated-to-libreoffice-3-3-and-tmux-1-4.html</id><summary type="html">&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Upgraded to&lt;a href="http://www.libreoffice.org/"&gt; Libreoffice-3.3&lt;/a&gt;. Many improvements can be seen.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Upgraded to&lt;a href="http://tmux.sourceforge.net/"&gt; tmux-1.4&lt;/a&gt;. It works very well on openSUSE-11.1. It definitely beats GNU Screen(even Git version).&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</summary></entry><entry><title>How to install OpenOffice 3 without root privilege</title><link href="/how-to-install-openoffice-3-without-root-privilege.html" rel="alternate"></link><updated>2010-12-21T20:06:02-05:00</updated><author><name>jchain</name></author><id>tag:,2010-12-21:how-to-install-openoffice-3-without-root-privilege.html</id><summary type="html">&lt;p&gt;The default openoffice of my desktop Linux was aging and I just wanted to update to the latest
+openoffice-3.2. But my problem was I didn't have the root privilege to do that. The official
+installer of OpenOffice failed again over again without notifying you that the reason of failure was
+the lack of root privilege. Finally I found this great
+&lt;a href="http://www.oooforum.org/forum/viewtopic.phtml?t=26173"&gt;post&lt;/a&gt;. I followed what it said and it worked
+like a charm. Only one thing I want to add: if you use color &lt;em&gt;ls&lt;/em&gt;, use &lt;strong&gt;ls --color=never&lt;/strong&gt; to
+disable the color output.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Download the installation package from OpenOffice website.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Unzip it into a directory.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;for i in &lt;code&gt;ls --color=never OOO320_m18_native_packed-1_en-US.9502/RPMS/*rpm&lt;/code&gt;; do rpm2cpio $i | cpio -ivd; done&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;cd OOO320_m18_native_packed-1_en-US.9502/RPMS/opt/openoffice.org3/program/&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;run ./soffice&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;(option) create symbolic link to soffice.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;(option) set file association in Nautilus. Right click a doc and choose &lt;strong&gt;Properties-&amp;gt;Open with -&amp;gt; Add...&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary><category term="openoffice"></category><category term="tips"></category><category term="word processing"></category></entry><entry><title>Convert ogv to flv in Linux</title><link href="/convert-ogv-to-flv-in-linux.html" rel="alternate"></link><updated>2010-12-08T22:26:07-05:00</updated><author><name>jchain</name></author><id>tag:,2010-12-08:convert-ogv-to-flv-in-linux.html</id><summary type="html">&lt;p&gt;I use recordMyDesktop to grab the screen movie but its default format is in ogv. If you want to
+convert to Flash format locally you can use the following command. Feel free to add it in your
+bashrc. If I recall correctly, this method can produce the best conversion in Linux platform.
+Correct me if I'm wrong. Also I forgot the source the following tip. If you know it, let me know.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Convert ogv to flv.&lt;/span&gt;
+&lt;span class="c1"&gt;# Usage: ogv2flv input.ogv -o output.flv&lt;/span&gt;
+&lt;span class="c1"&gt;# add -audiofile yoursound.wav if you need to replace the soundtrack alias &lt;/span&gt;
+&lt;span class="nv"&gt;ogv2flv&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;mencoder -of lavf -oac mp3lame -lameopts abr:br=56 -srate 22050 -ovc lavc -lavcopts vcodec=flv:vbitrate=250:mbd=2:mv0:trell:v4mv:cbp:last_pred=3 -vf scale=640:480&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="Linux"></category><category term="tips"></category></entry><entry><title>Backspace and Delete in TotalView's XTerm commandline interface</title><link href="/backspace-and-delete-in-totalviews-xterm-commandline-interface.html" rel="alternate"></link><updated>2010-11-24T22:02:51-05:00</updated><author><name>jchain</name></author><id>tag:,2010-11-24:backspace-and-delete-in-totalviews-xterm-commandline-interface.html</id><summary type="html">&lt;p&gt;I used TotalView a lot but the keyboard backspace and delete keys were totally messed up. Luckily
+I found the solution in a great article as follows:&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.ibb.net/~anne/keyboard/keyboard.html"&gt;http://www.ibb.net/~anne/keyboard/keyboard.html&lt;/a&gt;&lt;/p&gt;</summary><category term="Debug"></category><category term="Linux"></category><category term="tips"></category><category term="Totalview"></category></entry><entry><title>Shrink the file size of a pdf?</title><link href="/shrink-the-file-size-of-a-pdf.html" rel="alternate"></link><updated>2010-04-27T05:32:06-04:00</updated><author><name>jchain</name></author><id>tag:,2010-04-27:shrink-the-file-size-of-a-pdf.html</id><summary type="html">&lt;p&gt;Want to shrink the file size of a pdf? Use the following command. ebook has a good balance between the file size and the image quality. screen compresses the images too much.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook[screen, ] -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;-dPDFSETTINGS=&lt;/strong&gt;&lt;em&gt;configuration&lt;/em&gt;
+    Presets the "distiller parameters" to one of four predefined settings:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;/screen&lt;/strong&gt; selects low-resolution output similar to the Acrobat Distiller "Screen Optimized" setting.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;/ebook&lt;/strong&gt; selects medium-resolution output similar to the Acrobat Distiller "eBook" setting.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;/printer&lt;/strong&gt; selects output similar to the Acrobat Distiller "Print Optimized" setting.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;/prepress&lt;/strong&gt; selects output similar to Acrobat Distiller "Prepress Optimized" setting.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;/default&lt;/strong&gt; selects output intended to be useful across a wide variety of uses, possibly at the expense of a larger output file.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</summary><category term="text processing"></category><category term="tips"></category></entry></feed>
